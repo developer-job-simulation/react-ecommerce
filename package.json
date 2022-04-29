@@ -2,7 +2,8 @@
   "name": "react-project",
   "version": "0.0.1",
   "scripts": {
-    "dev": "vite",
+    "dev:frontend": "vite",
+    "dev:backend": "json-server --watch db.json --port 3001",
     "build": "vite build",
     "serve": "vite preview"
   },
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "autoprefixer": "^10.4.5",
+    "json-server": "^0.17.0",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.24"
   }
