@@ -1,5 +1,5 @@
 {
-  "name": "react-project",
+  "name": "react-ecommerce",
   "version": "0.0.1",
   "scripts": {
     "dev:frontend": "vite",
