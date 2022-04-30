@@ -2,10 +2,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ShoppingBagIcon, XIcon } from "@heroicons/react/outline";
 import React, { Fragment, useState } from "react";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function NavBar() {
   const [open, setOpen] = useState(false);
 

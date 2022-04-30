@@ -1,2 +1,1 @@
-- shopping cart
-- product filters
+- shopping cart page

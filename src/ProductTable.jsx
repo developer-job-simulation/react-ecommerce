@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import ProductFilters from "./ProductFilters";
 
 export default function ProductTable() {
   let [products, setProducts] = useState([]);
 
   useEffect(async () => {
-    if (products.length > 0) return;
     let res = await fetch("http://localhost:3001/products");
     let body = await res.json();
     setProducts(body);
@@ -12,8 +12,9 @@ export default function ProductTable() {
 
   return (
     <div className="bg-white">
-      <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
+        <ProductFilters />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
@@ -22,8 +23,17 @@ export default function ProductTable() {
                 <img
                   src={product.imageSrc}
                   alt={product.imageAlt}
-                  className="w-full h-full object-center object-cover group-hover:opacity-75"
+                  className="w-full h-full object-center object-cover"
                 />
+                <button
+                  type="button"
+                  className="hidden group-hover:block group-hover:opacity-50 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-black"
+                  onClick={() => {
+                    // TODO
+                  }}
+                >
+                  Add To Cart
+                </button>
               </div>
               <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
               <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
