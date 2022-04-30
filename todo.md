@@ -1,1 +1,2 @@
-- shopping cart page
+- prep code for pre-completion
+- complete the exercise
