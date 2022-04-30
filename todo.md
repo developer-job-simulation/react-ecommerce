@@ -1,0 +1,4 @@
+- shopping cart
+- checkout page
+- product filters
+- nav

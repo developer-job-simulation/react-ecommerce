@@ -1,10 +1,11 @@
-import React from 'react';
-import ProductPage from './ProductPage';
+import React from "react";
+import NavBar from "./NavBar";
+import ProductPage from "./ProductPage";
 
 function App() {
   return (
     <main>
-      Hello World
+      <NavBar />
       <ProductPage />
     </main>
   );
