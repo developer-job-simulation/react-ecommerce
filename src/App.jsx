@@ -1,12 +1,12 @@
 import React from "react";
 import NavBar from "./NavBar";
-import ProductPage from "./ProductPage";
+import ProductTable from "./ProductTable";
 
 function App() {
   return (
     <main>
       <NavBar />
-      <ProductPage />
+      <ProductTable />
     </main>
   );
 }

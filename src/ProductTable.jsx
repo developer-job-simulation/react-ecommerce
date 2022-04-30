@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function ProductPage() {
+export default function ProductTable() {
   let [products, setProducts] = useState([]);
 
   useEffect(async () => {
