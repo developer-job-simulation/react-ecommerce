@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductFilters from "./ProductFilters";
 
-export default function ProductTable() {
+export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
 
   useEffect(async () => {
@@ -29,7 +29,20 @@ export default function ProductTable() {
                   type="button"
                   className="hidden group-hover:block group-hover:opacity-50 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-black"
                   onClick={() => {
-                    // TODO
+                    let newCart = cart.slice();
+
+                    if (!newCart.includes(product)) {
+                      product.quantity = 1;
+                      newCart.push(product);
+                    } else {
+                      newCart.map((p) => {
+                        if (p.id === product.id) {
+                          p.quantity += 1;
+                        }
+                      });
+                    }
+
+                    updateCart(newCart);
                   }}
                 >
                   Add To Cart
