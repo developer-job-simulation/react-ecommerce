@@ -2,28 +2,6 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
 import React, { Fragment } from "react";
 
-const filters = {
-  price: [
-    { value: "0", label: "$0 - $25", checked: false },
-    { value: "25", label: "$25 - $50", checked: false },
-    { value: "50", label: "$50 - $75", checked: false },
-    { value: "75", label: "$75+", checked: false },
-  ],
-  color: [
-    { value: "beige", label: "Beige", checked: false },
-    { value: "green", label: "Green", checked: false },
-    { value: "white", label: "White", checked: false },
-    { value: "black", label: "Black", checked: false },
-    { value: "gray", label: "Gray", checked: false },
-    { value: "teal", label: "Teal", checked: false },
-  ],
-};
-
-const sortOptions = [
-  { name: "Price", current: false },
-  { name: "Newest", current: false },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
