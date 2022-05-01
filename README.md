@@ -1,4 +1,4 @@
-# react-project by jobsimulator.dev
+# react-ecommerce by jobsimulator.dev
 
 ### Getting Started
 
