@@ -91,7 +91,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                                         updateCart(newCart);
                                       }}
                                       type="button"
-                                      className="font-medium text-indigo-600 hover:text-indigo-500"
+                                      className="font-medium text-gray-500 hover:text-black"
                                     >
                                       Remove
                                     </button>
@@ -114,7 +114,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                     <div className="mt-6">
                       <a
                         href="#"
-                        className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                        className="flex items-center justify-center rounded-md border border-transparent bg-gray-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-black"
                       >
                         Checkout
                       </a>
@@ -124,7 +124,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                         or{" "}
                         <button
                           type="button"
-                          className="font-medium text-indigo-600 hover:text-indigo-500"
+                          className="font-medium text-gray-700 hover:text-black"
                           onClick={() => setOpen(false)}
                         >
                           Continue Shopping<span aria-hidden="true"> &rarr;</span>

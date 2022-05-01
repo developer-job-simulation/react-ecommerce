@@ -22,6 +22,5 @@
 - [Bug] Use Effect infinite loop (Easy)
 - [Bug] Need to display "Empty Cart" when cart is empty on cart page (Easy)
 - [Bug] Update Cart Icon with Cart Size (easy)
-<!-- - [Bug] Cart Item Quantity Issue (instead of appending two items, should be one with quantity n) (medium) -->
-- [Bug] Cart not closing when user clicks gray (medium)
+- [Bug] Cart not closing when user clicks gray (easy)
 - [Bug] Compute Subtotal (medium)
