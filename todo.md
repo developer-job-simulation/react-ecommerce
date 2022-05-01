@@ -1,3 +1,0 @@
-- [ ] update db with proper products
-- [ ] clean up filters
-- [ ]

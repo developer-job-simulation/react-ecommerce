@@ -10,32 +10,18 @@ const filters = {
     { value: "75", label: "$75+", checked: false },
   ],
   color: [
-    { value: "white", label: "White", checked: false },
     { value: "beige", label: "Beige", checked: false },
-    { value: "blue", label: "Blue", checked: false },
-    { value: "brown", label: "Brown", checked: false },
     { value: "green", label: "Green", checked: false },
-    { value: "purple", label: "Purple", checked: false },
-  ],
-  size: [
-    { value: "xs", label: "XS", checked: false },
-    { value: "s", label: "S", checked: false },
-    { value: "m", label: "M", checked: false },
-    { value: "l", label: "L", checked: false },
-    { value: "xl", label: "XL", checked: false },
-    { value: "2xl", label: "2XL", checked: false },
-  ],
-  category: [
-    { value: "all-new-arrivals", label: "All New Arrivals", checked: false },
-    { value: "tees", label: "Tees", checked: false },
-    { value: "objects", label: "Objects", checked: false },
-    { value: "sweatshirts", label: "Sweatshirts", checked: false },
-    { value: "pants-and-shorts", label: "Pants & Shorts", checked: false },
+    { value: "white", label: "White", checked: false },
+    { value: "black", label: "Black", checked: false },
+    { value: "gray", label: "Gray", checked: false },
+    { value: "teal", label: "Teal", checked: false },
   ],
 };
+
 const sortOptions = [
-  { name: "Price", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
+  { name: "Price", current: false },
+  { name: "Newest", current: false },
 ];
 
 function classNames(...classes) {
@@ -114,48 +100,6 @@ export default function ProductFilters() {
               </div>
             </fieldset>
           </div>
-          <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
-            <fieldset>
-              <legend className="block font-medium">Size</legend>
-              <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.size.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
-                    <input
-                      id={`size-${optionIdx}`}
-                      name="size[]"
-                      defaultValue={option.value}
-                      type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
-                    />
-                    <label htmlFor={`size-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="block font-medium">Category</legend>
-              <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.category.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
-                    <input
-                      id={`category-${optionIdx}`}
-                      name="category[]"
-                      defaultValue={option.value}
-                      type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
-                    />
-                    <label htmlFor={`category-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
-          </div>
         </div>
       </Disclosure.Panel>
       <div className="col-start-1 row-start-1 py-4">
@@ -185,8 +129,10 @@ export default function ProductFilters() {
                   {sortOptions.map((option) => (
                     <Menu.Item key={option.name}>
                       {({ active }) => (
-                        <a
-                          href={option.href}
+                        <button
+                          onClick={() => {
+                            // TODO
+                          }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
                             active ? "bg-gray-100" : "",
@@ -194,7 +140,7 @@ export default function ProductFilters() {
                           )}
                         >
                           {option.name}
-                        </a>
+                        </button>
                       )}
                     </Menu.Item>
                   ))}
