@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Cart from "./Cart";
-import NavBar from "./NavBar";
-import ProductTable from "./ProductTable";
+import Cart from "../Components/Cart";
+import NavBar from "../Components/NavBar";
+import ProductTable from "../Components/ProductTable";
 
-function App() {
+function Home() {
   const [open, setOpen] = useState(false);
   const [cart, updateCart] = useState([]);
 
@@ -16,4 +16,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
