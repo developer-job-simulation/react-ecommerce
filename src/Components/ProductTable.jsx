@@ -1,8 +1,37 @@
 import React, { useEffect, useState } from "react";
 import ProductFilters from "./ProductFilters";
 
+const getDefaultFilterOptions = () => {
+  return {
+    price: [
+      { minValue: 0, maxValue: 25, label: "$0 - $25", checked: false },
+      { minValue: 25, maxValue: 50, label: "$25 - $50", checked: false },
+      { minValue: 50, maxValue: 75, label: "$50 - $75", checked: false },
+      { minValue: 75, maxValue: Number.MAX_VALUE, label: "$75+", checked: false },
+    ],
+    color: [
+      { value: "beige", label: "Beige", checked: false },
+      { value: "green", label: "Green", checked: false },
+      { value: "white", label: "White", checked: false },
+      { value: "black", label: "Black", checked: false },
+      { value: "gray", label: "Gray", checked: false },
+      { value: "teal", label: "Teal", checked: false },
+    ],
+  };
+};
+
+const getDefaultSortOptions = () => {
+  return [
+    { name: "Price", current: false },
+    { name: "Newest", current: false },
+  ];
+};
+
 export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
+
+  const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
+  const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
 
   useEffect(async () => {
     console.info("Fetching Products...");
@@ -15,7 +44,7 @@ export default function ProductTable({ cart, updateCart }) {
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        <ProductFilters />
+        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (

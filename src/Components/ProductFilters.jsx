@@ -28,7 +28,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters() {
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
   return (
     <Disclosure
       as="section"
@@ -62,12 +62,12 @@ export default function ProductFilters() {
             <fieldset>
               <legend className="block font-medium">Price</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.price.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
+                {filterOptions.price.map((option, optionIdx) => (
+                  <div key={option.minValue} className="flex items-center text-base sm:text-sm">
                     <input
                       id={`price-${optionIdx}`}
                       name="price[]"
-                      defaultValue={option.value}
+                      defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
@@ -82,7 +82,7 @@ export default function ProductFilters() {
             <fieldset>
               <legend className="block font-medium">Color</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.color.map((option, optionIdx) => (
+                {filterOptions.color.map((option, optionIdx) => (
                   <div key={option.value} className="flex items-center text-base sm:text-sm">
                     <input
                       id={`color-${optionIdx}`}
