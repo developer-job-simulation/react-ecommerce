@@ -28,6 +28,11 @@ This project was built using
 - TailwindCSS
 - React
 
+### How to get help?
+
+The best way is to ask a question in our Discord community.
+Please consider joining: https://discord.gg/7cAkUcKbjB
+
 ### How to support us?
 If you found the project helpful and would like us to make more projects like this - please consider supporting us.
 
