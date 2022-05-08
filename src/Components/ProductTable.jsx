@@ -38,7 +38,8 @@ export default function ProductTable({ cart, updateCart }) {
     let res = await fetch("http://localhost:3001/products");
     let body = await res.json();
     setProducts(body);
-  });
+    console.log(products);
+  },[]);
 
   return (
     <div className="bg-white">
