@@ -32,7 +32,7 @@ const getDefaultSortOptions = () => {
 	];
 };
 
-export default function ProductTable({ cart, updateCart }) {
+export default function ProductTable({ cart, updateCart, setSubtotal }) {
 	let [products, setProducts] = useState([]);
 
 	const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
@@ -80,6 +80,9 @@ export default function ProductTable({ cart, updateCart }) {
 										}
 
 										updateCart(newCart);
+
+										// adds the added product's price to the current subtotal
+										setSubtotal((prev) => prev + parseInt(product.price));
 									}}
 								>
 									Add To Cart
