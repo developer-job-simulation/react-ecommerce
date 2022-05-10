@@ -13,7 +13,7 @@ function calculateSubtotal(cart) {
   return currencyFormatter.format(subtotal);
 }
 
-export default function Cart({ open, setOpen, cart, updateCart }) {
+export default function Cart({ open, setOpen, cart, updateCartAndLocalStorage }) {
   let subtotal = calculateSubtotal(cart);
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -107,7 +107,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
 
                                           return p.quantity > 0;
                                         });
-                                        updateCart(newCart);
+                                        updateCartAndLocalStorage(newCart);
                                       }}
                                       type="button"
                                       className="font-medium text-gray-500 hover:text-black"

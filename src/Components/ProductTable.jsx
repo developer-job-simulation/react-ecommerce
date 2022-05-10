@@ -27,7 +27,7 @@ const getDefaultSortOptions = () => {
   ];
 };
 
-export default function ProductTable({ cart, updateCart }) {
+export default function ProductTable({ cart, updateCartAndLocalStorage }) {
   let [products, setProducts] = useState([]);
 
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
@@ -72,7 +72,7 @@ export default function ProductTable({ cart, updateCart }) {
                       });
                     }
 
-                    updateCart(newCart);
+                    updateCartAndLocalStorage(newCart);
                   }}
                 >
                   Add To Cart
