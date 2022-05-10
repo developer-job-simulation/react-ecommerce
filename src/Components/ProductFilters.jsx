@@ -104,12 +104,21 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
             >
               <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
-                  {sortOptions.map((option) => (
+                  {sortOptions.map((option, optionIdx) => (
                     <Menu.Item key={option.name}>
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            let newSortOptions = [...sortOptions];
+                            if (optionIdx == 0) {
+                              newSortOptions[0].current = !newSortOptions[0].current;
+                              newSortOptions[1].current = false;
+                            } else {
+                              newSortOptions[0].current = false;
+                              newSortOptions[1].current = !newSortOptions[1].current;
+                            }
+
+                            setSortOptions(newSortOptions);
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",

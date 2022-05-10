@@ -27,6 +27,8 @@ const getDefaultSortOptions = () => {
   ];
 };
 
+let originalProducts = [];
+
 export default function ProductTable({ cart, updateCartAndLocalStorage }) {
   let [products, setProducts] = useState([]);
 
@@ -37,8 +39,28 @@ export default function ProductTable({ cart, updateCartAndLocalStorage }) {
     console.info("Fetching Products...");
     let res = await fetch("http://localhost:3001/products");
     let body = await res.json();
+    originalProducts = body;
     setProducts(body);
   }, []);
+
+  useEffect(() => {
+    let option = sortOptions.filter((option) => option.current);
+    let newProducts = [...products];
+
+    if (option.length === 0) return setProducts(originalProducts);
+
+    newProducts.sort((product1, product2) => {
+      if (option[0].name === "Price") {
+        //sort by price
+        return product2.price - product1.price;
+      } else {
+        // sort by release date
+        return Number(product2.releaseDate) - Number(product1.releaseDate);
+      }
+    });
+
+    setProducts(newProducts);
+  }, [sortOptions]);
 
   return (
     <div className="bg-white">
