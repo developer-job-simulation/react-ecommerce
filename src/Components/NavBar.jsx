@@ -1,7 +1,14 @@
 import { ShoppingBagIcon } from "@heroicons/react/outline";
 import React from "react";
 
-export default function NavBar({ setOpen }) {
+function countItemsInCart(cart) {
+  let count = 0;
+  cart.map((item) => (count += item.quantity));
+  return count;
+}
+
+export default function NavBar({ setOpen, cart }) {
+  let itemsInCart = countItemsInCart(cart);
   return (
     <div className="bg-white">
       <header className="relative">
@@ -41,7 +48,9 @@ export default function NavBar({ setOpen }) {
                             className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                             aria-hidden="true"
                           />
-                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                            {itemsInCart}
+                          </span>
                           <span className="sr-only">items in cart, view bag</span>
                         </button>
                       </div>
