@@ -78,7 +78,8 @@ export default function ProductTable({ cart, updateCart }) {
                         }
                       });
                     }
-
+                    console.log(newCart);
+                    localStorage.setItem("cart", JSON.stringify(newCart));
                     updateCart(newCart);
                   }}
                 >
