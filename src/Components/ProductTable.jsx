@@ -38,11 +38,14 @@ export default function ProductTable({ cart, updateCart }) {
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
 
-  useEffect(async () => {
-    console.info("Fetching Products...");
-    let res = await fetch("http://localhost:3001/products");
-    let body = await res.json();
-    setProducts(body);
+  useEffect(() => {
+    let fetchProducts = async () => {
+      console.info("Fetching Products...");
+      let res = await fetch("http://localhost:3001/products");
+      let body = await res.json();
+      setProducts(body);
+    };
+    fetchProducts();
   }, []);
 
   return (
