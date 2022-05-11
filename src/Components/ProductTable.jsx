@@ -62,6 +62,31 @@ export default function ProductTable({ cart, updateCartAndLocalStorage }) {
     setProducts(newProducts);
   }, [sortOptions]);
 
+  useEffect(() => {
+    let newProducts = [...originalProducts];
+    let priceFilters = filterOptions.price.filter((option) => option.checked);
+    let colorFilters = filterOptions.color.filter((option) => option.checked);
+
+    if (priceFilters.length != 0) {
+      newProducts = newProducts.filter((product) => {
+        let resultArray = priceFilters.map(
+          (filter) => filter.minValue < product.price && filter.maxValue > product.price
+        );
+        return resultArray.reduce((x, y) => x || y, false);
+      });
+    }
+
+    if (colorFilters.length != 0) {
+      newProducts = newProducts.filter((product) => {
+        let colorPasses = true;
+        colorFilters.map((filter) => (colorPasses = filter.value == product.color));
+        return colorPasses;
+      });
+    }
+
+    setProducts(newProducts);
+  }, [filterOptions]);
+
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
