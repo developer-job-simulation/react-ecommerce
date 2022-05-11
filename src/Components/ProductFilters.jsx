@@ -6,7 +6,26 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+function countFilters(filterOptions) {
+  let count = 0;
+
+  filterOptions["color"].map((color) => {
+    if (color.checked) {
+      count += 1;
+    }
+  });
+
+  filterOptions["price"].map((color) => {
+    if (color.checked) {
+      count += 1;
+    }
+  });
+
+  return count;
+}
+
 export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+  let filterCount = countFilters(filterOptions);
   return (
     <Disclosure
       as="section"
@@ -24,7 +43,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {filterCount} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
@@ -49,6 +68,11 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onClick={() => {
+                        let newFilterOptions = { ...filterOptions };
+                        newFilterOptions.price[optionIdx].checked = !newFilterOptions.price[optionIdx].checked;
+                        setFilterOptions(newFilterOptions);
+                      }}
                     />
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -69,6 +93,11 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onClick={() => {
+                        let newFilterOptions = { ...filterOptions };
+                        newFilterOptions.color[optionIdx].checked = !newFilterOptions.color[optionIdx].checked;
+                        setFilterOptions(newFilterOptions);
+                      }}
                     />
                     <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
