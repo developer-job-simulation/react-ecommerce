@@ -24,7 +24,13 @@ function countFilters(filterOptions) {
   return count;
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({
+  filterOptions,
+  setFilterOptions,
+  sortOptions,
+  setSortOptions,
+  getDefaultFilterOptions,
+}) {
   let filterCount = countFilters(filterOptions);
   return (
     <Disclosure
@@ -47,7 +53,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button onClick={() => setFilterOptions(getDefaultFilterOptions())} type="button" className="text-gray-500">
               Clear all
             </button>
           </div>
@@ -65,6 +71,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       id={`price-${optionIdx}`}
                       name="price[]"
                       defaultValue={option.minValue}
+                      checked={option.checked}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
@@ -90,6 +97,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       id={`color-${optionIdx}`}
                       name="color[]"
                       defaultValue={option.value}
+                      checked={option.checked}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
