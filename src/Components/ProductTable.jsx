@@ -78,9 +78,8 @@ export default function ProductTable({ cart, updateCartAndLocalStorage }) {
 
     if (colorFilters.length != 0) {
       newProducts = newProducts.filter((product) => {
-        let colorPasses = true;
-        colorFilters.map((filter) => (colorPasses = filter.value == product.color));
-        return colorPasses;
+        let resultArray = colorFilters.map((filter) => filter.value == product.color);
+        return resultArray.reduce((x, y) => x || y, false);
       });
     }
 
