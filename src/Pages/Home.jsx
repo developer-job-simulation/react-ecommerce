@@ -10,9 +10,6 @@ function Home() {
       return JSON.parse(localStorage.getItem("cart"));
     else return [];
   });
-  //   const [cart, updateCart] = useState([]);
-
-  console.log("here is the cart!", JSON.parse(localStorage.getItem("cart")));
 
   return (
     <main>

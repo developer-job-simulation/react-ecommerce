@@ -45,6 +45,26 @@ export default function ProductTable({ cart, updateCart }) {
     setProducts(body);
   }, []);
 
+  useEffect(() => {
+    let sortedProducts = [...products];
+
+    for (let i = 0; i < sortOptions.length; i++) {
+      if (sortOptions[i].current === true) {
+        if (sortOptions[i].name === "Price") {
+          console.log("sorting by price");
+          sortedProducts.sort(
+            (itemA, itemB) => Number(itemB.price) - Number(itemA.price)
+          );
+        } else {
+          sortedProducts.sort(
+            (itemA, itemB) => itemB.releaseDate - itemA.releaseDate
+          );
+        }
+      }
+    }
+    setProducts((prevState) => sortedProducts);
+  }, [sortOptions]);
+
   return (
     <div className="bg-white">
       <div className="max-w-2xl px-4 mx-auto sm:px-6 lg:max-w-7xl lg:px-8">
@@ -78,7 +98,6 @@ export default function ProductTable({ cart, updateCart }) {
                         }
                       });
                     }
-                    console.log(newCart);
                     localStorage.setItem("cart", JSON.stringify(newCart));
                     updateCart(newCart);
                   }}
