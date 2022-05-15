@@ -30,7 +30,7 @@
     {
       "id": 4,
       "name": "Machined Mechanical Pencil",
-      "price": "35",
+      "price": 35,
       "color": "black",
       "releaseDate": "1651350489",
       "imageSrc": "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg",
