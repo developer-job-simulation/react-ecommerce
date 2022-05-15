@@ -6,7 +6,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts  }) {
   return (
     <Disclosure
       as="section"
@@ -109,8 +109,20 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
-                          }}
+                            if (option.name == 'Price') { // sorting based on Price
+                              let sortedProducts = [...products].sort(function (a, b) {
+                                return b.price - a.price;
+                              });
+                              setProducts(sortedProducts);
+                            }
+                            if(option.name == 'Newest'){ // sorting based on releaseDate
+                              let sortedProducts = [...products].sort(function(a, b){
+                                return b.releaseDate - a.releaseDate;
+                              });
+                              setProducts(sortedProducts);
+                            }
+                          }
+                        }
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
                             active ? "bg-gray-100" : "",

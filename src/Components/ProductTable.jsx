@@ -39,14 +39,14 @@ export default function ProductTable({ cart, updateCart }) {
     let body = await res.json();
     setProducts(body);
     console.log(products);
-  },[]);
+  },[]); //This tells React that your effect doesn’t depend on any values from props or state, so it never needs to re-run
 
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
-
+        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts }} />
+          
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
             <a key={product.id} className="group">
