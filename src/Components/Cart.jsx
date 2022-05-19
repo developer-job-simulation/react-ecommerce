@@ -23,7 +23,12 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay 
+            onClick={() => setOpen(false)} 
+            className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            
+            />
+
           </Transition.Child>
 
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
