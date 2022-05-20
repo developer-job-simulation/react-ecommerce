@@ -1,6 +1,12 @@
 # react-ecommerce by jobsimulator.dev
 
-### Getting Started
+### How to start working
+
+1. Fork this repo and clone it locally
+2. Fix the issue
+3. Create Pull Request to this repository
+
+### How to run app locally
 
 First install the node dependencies
 
