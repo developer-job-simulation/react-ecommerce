@@ -37,7 +37,7 @@ export default function ProductTable({ cart, updateCart }) {
 
   useEffect(async () => {
     console.info("Fetching Products...");
-    let res = await fetch("https://3001-twbluenaxel-reactecomme-nw51bxnrsln.ws-us45.gitpod.io/products", {
+    let res = await fetch("http://localhost:3001/products", {
       'credentials': "include"});
     let body = await res.json();
     setProducts(body);

@@ -1,6 +1,6 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
-import { ShoppingCartIcon, XIcon } from "@heroicons/react/outline";
+
 import React, { Fragment } from "react";
 
 function classNames(...classes) {
