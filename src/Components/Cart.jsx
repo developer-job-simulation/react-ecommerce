@@ -9,7 +9,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
         as="div"
         className="fixed inset-0 overflow-hidden z-10"
         onClose={() => {
-          setOpen;
+          setOpen(false);
         }}
       >
         <div className="absolute inset-0 overflow-hidden">
