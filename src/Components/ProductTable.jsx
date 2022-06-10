@@ -33,16 +33,15 @@ export default function ProductTable({ cart, updateCart }) {
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
 
-  
-
-  useEffect(async () => {
-    console.info("Fetching Products...");
-    let res = await fetch("https://3001-twbluenaxel-reactecomme-nw51bxnrsln.ws-us45.gitpod.io/products", {
-      'credentials': "include"});
-    let body = await res.json();
-    setProducts(body);
-    // return setProducts(body)
-  }, []);
+  useEffect(() => {
+    let fetchProducts = async () => {
+      console.info("Fetching Products...");
+      let res = await fetch("http://localhost:3001/products");
+      let body = await res.json();
+      setProducts(body);
+    };
+    fetchProducts();
+  });
 
   return (
     <div className="bg-white">
