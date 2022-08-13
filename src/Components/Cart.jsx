@@ -65,10 +65,14 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
 											</div>
 										</div>
 
-										<div className="flex flex-col items-center justify-center h-full">
-                      <ShoppingCartIcon className="max-w-[3rem]" />
-                      <p className="py-2">Your Cart is Empty.</p>
-										</div>
+										{cart.length === 0 && (
+											<div className="flex flex-col items-center justify-center h-full">
+												<ShoppingCartIcon className="max-w-[3rem]" />
+												<p className="py-2">
+													Your Cart is Empty.
+												</p>
+											</div>
+										)}
 
 										<div className="mt-8">
 											<div className="flow-root">

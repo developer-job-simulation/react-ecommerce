@@ -4,6 +4,7 @@
   "scripts": {
     "dev:frontend": "vite",
     "dev:backend": "json-server --watch db.json --port 3001",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend \"",
     "build": "vite build",
     "serve": "vite preview"
   },
