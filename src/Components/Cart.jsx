@@ -4,7 +4,8 @@ import React, { Fragment } from "react";
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
 	let subtotal = 0;
-	cart.map((item) => (subtotal += item.price));
+
+	cart.map((item) => (subtotal += item.price * item.quantity));
 
 	return (
 		<Transition.Root show={open} as={Fragment}>
