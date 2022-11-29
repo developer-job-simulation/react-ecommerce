@@ -7,6 +7,10 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
     cart.forEach(product => {
     subtotal += product.price
     })
+
+  
+    
+    
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -17,7 +21,9 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
         }}
       >
         <div className="absolute inset-0 overflow-hidden">
-          <Transition.Child
+          <Transition.Child  onClick={(event) => {
+          setOpen(false)
+        }}
             as={Fragment}
             enter="ease-in-out duration-500"
             enterFrom="opacity-0"
