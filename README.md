@@ -43,7 +43,6 @@ Please consider joining: https://discord.gg/7cAkUcKbjB
 If you found the project helpful and would like us to make more projects like this - please consider supporting us.
 
 We offer premium services for this project. If you decide to use those, you will both get extra value out of the project and at the same time you will give us motivation to keep going to create even better projects.
-- Video guide of either me or @sbmsr going through all the issues and fixing them following the industry best practices - $15
-- Video guide + pull request reviews bundled together - $30
+- Video guide of a senior dev going through all the issues and fixing them following the industry best practices - $15
 
 You can purchase those here: https://jobsimulator.gumroad.com/l/react-ecommerce
