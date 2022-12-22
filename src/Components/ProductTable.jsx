@@ -58,7 +58,7 @@ export default function ProductTable({ cart, updateCart }) {
         // let upperFilterPrice= priceFilterSelected.map(item => item.maxValue)
         let lowest = Math.min(...(priceFilterSelected.map(item => item.minValue)));
         let highest = Math.max(...(priceFilterSelected.map(item => item.maxValue)));
-        newProducts = newProducts.filter(product => {return  product.price >= lowest && product.price <= highest})
+        newProducts = newProducts.filter(product => {return  product.price >= lowest && product.price <= highest});
       }
       setProducts(newProducts)
     },[filterOptions]);
