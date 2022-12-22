@@ -6,7 +6,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts  }) {
+let handleChange = () =>  {
+
+console.log("produucts"+products)
+
+}
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts, getDefaultFilterOptions, count, setCount }) {
   return (
     <Disclosure
       as="section"
@@ -24,11 +29,14 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {count} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button type="button" className="text-gray-500" onClick = {e => {
+              setFilterOptions(getDefaultFilterOptions());
+              setCount(0);
+            }}>
               Clear all
             </button>
           </div>
@@ -48,7 +56,24 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      // defaultChecked={option.checked}
+                      checked={option.checked}
+                      onChange = { (e) => {
+                        let newFilter = {...filterOptions};
+                        newFilter.price[optionIdx].checked  = !(newFilter.price[optionIdx].checked);
+                        setFilterOptions(newFilter);
+                        if(newFilter.price[optionIdx].checked){
+                          setCount(count+1)
+                        }
+                        if(!(newFilter.price[optionIdx].checked)){
+                          let count1 = count>0?count-1:0
+                          setCount(count1)
+                        }
+                        
+                        // handleCount();
+                      } 
+                        
+                      }
                     />
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -68,7 +93,21 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.value}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
+                      onChange = { (e) => {
+                        let newFilter = {...filterOptions};
+                        newFilter.color[optionIdx].checked  = !newFilter.color[optionIdx].checked;
+                        setFilterOptions(newFilter);
+                        if(newFilter.color[optionIdx].checked){
+                          setCount(count+1)
+                        }
+                        if(!(newFilter.color[optionIdx].checked)){
+                          let count1 = count>0?count-1:0
+                          setCount(count1)
+                        }
+                        console.log("inside"+products)
+                        // handleCount(optionIdx);
+                      } }
                     />
                     <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
