@@ -6,11 +6,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-let handleChange = () =>  {
-
-console.log("produucts"+products)
-
-}
 export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts, getDefaultFilterOptions, count, setCount }) {
   return (
     <Disclosure
@@ -69,8 +64,6 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                           let count1 = count>0?count-1:0
                           setCount(count1)
                         }
-                        
-                        // handleCount();
                       } 
                         
                       }
@@ -105,8 +98,6 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                           let count1 = count>0?count-1:0
                           setCount(count1)
                         }
-                        console.log("inside"+products)
-                        // handleCount(optionIdx);
                       } }
                     />
                     <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">

@@ -63,16 +63,6 @@ export default function ProductTable({ cart, updateCart }) {
       setProducts(newProducts)
     },[filterOptions]);
 
-    let isInBetween = (lower, higher, value) =>  {
-      if(lower.every(item => {console.log(value>=item); return value>=item}) && 
-      higher.every(item2 => 
-        {console.log(value+"---"+item2); console.log(value<=item2);
-        value<=item2}) ){
-        return true
-      }
-      else return false;
-      
-      }
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
