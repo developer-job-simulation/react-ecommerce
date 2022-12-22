@@ -44,24 +44,43 @@ export default function ProductTable({ cart, updateCart }) {
     setProducts(body);
   },[]); //This tells React that your effect doesn’t depend on any values from props or state, so it never needs to re-run
 
-    useEffect(() => {
-      let newProducts = [...ogProducts];
-      console.log(newProducts)
-      let priceFilterSelected = filterOptions.price.filter((item) => item.checked);
-      let colorFilterSelected = filterOptions.color.filter((item) => item.checked);
-      if (colorFilterSelected.length >= 1){
-        let filterColor = colorFilterSelected.map(item => item.value)
-        newProducts = newProducts.filter(product => {return filterColor.includes(product.color)});
-      }
-      if (priceFilterSelected.length >= 1){
+  useEffect(() => {
+    let newProducts = [...ogProducts];
+    console.log(newProducts)
+    let priceFilterSelected = filterOptions.price.filter((item) => item.checked);
+    let colorFilterSelected = filterOptions.color.filter((item) => item.checked);
+    if (colorFilterSelected.length >= 1){
+      let filterColor = colorFilterSelected.map(item => item.value)
+      newProducts = newProducts.filter(product => {return filterColor.includes(product.color)});
+    }
+    if (priceFilterSelected.length >= 1){
         // let lowerFilterPrice = priceFilterSelected.map(item => item.minValue)
         // let upperFilterPrice= priceFilterSelected.map(item => item.maxValue)
-        let lowest = Math.min(...(priceFilterSelected.map(item => item.minValue)));
-        let highest = Math.max(...(priceFilterSelected.map(item => item.maxValue)));
-        newProducts = newProducts.filter(product => {return  product.price >= lowest && product.price <= highest});
+      let lowest = Math.min(...(priceFilterSelected.map(item => item.minValue)));
+      let highest = Math.max(...(priceFilterSelected.map(item => item.maxValue)));
+      newProducts = newProducts.filter(product => {return  product.price >= lowest && product.price <= highest});
+    }
+    setProducts(newProducts)
+  },[filterOptions]);
+
+  useEffect(() => {
+    let newProducts2 = [...products];
+    let sortSelected = sortOptions.filter((option) => option.current);
+      // let NewSortSelected = sortOptions.filter((option) => option.name == "Newest");
+    if (sortSelected.length==1){
+      if (sortSelected[0].name == "Price"){
+        newProducts2 =  [...newProducts2].sort(function (a, b) {
+          return b.price - a.price;
+        });
       }
-      setProducts(newProducts)
-    },[filterOptions]);
+      else {
+        newProducts2 =  [...newProducts2].sort(function (a, b) {
+          return b.releaseDate - a.releaseDate;
+        });
+      }
+    }
+    setProducts(newProducts2)
+  },[sortOptions]);
 
   return (
     <div className="bg-white">

@@ -6,7 +6,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts, getDefaultFilterOptions, count, setCount }) {
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts, getDefaultFilterOptions, count, setCount}) {
   return (
     <Disclosure
       as="section"
@@ -134,23 +134,24 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
             >
               <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
-                  {sortOptions.map((option) => (
+                  {sortOptions.map((option, optionIdx) => (
                     <Menu.Item key={option.name}>
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            if (option.name == 'Price') { // sorting based on Price
-                              let sortedProducts = [...products].sort(function (a, b) {
-                                return b.price - a.price;
-                              });
-                              setProducts(sortedProducts);
+                            let newSort = [...sortOptions];
+                            console.log(sortOptions)
+                            if(optionIdx == 0){
+                              newSort[0].current = true;
+                              newSort[1].current = false;
                             }
-                            if(option.name == 'Newest'){ // sorting based on releaseDate
-                              let sortedProducts = [...products].sort(function(a, b){
-                                return b.releaseDate - a.releaseDate;
-                              });
-                              setProducts(sortedProducts);
+                            if(optionIdx == 1){
+                              newSort[1].current = true;
+                              newSort[0].current = false;
                             }
+                            // newSort[optionIdx].current = !newSort[optionIdx].current;
+                            console.log(newSort)
+                            setSortOptions(newSort);
                           }
                         }
                           className={classNames(
