@@ -7,6 +7,34 @@ function classNames(...classes) {
 }
 
 export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+  const handleFilter = (e, type, option) => {
+    if (type === "price") {
+      if (e.target.checked) {
+        option.checked = true
+        const nextPrice = [...filterOptions.price]
+        const nextFilter = {...filterOptions, price: nextPrice}
+        setFilterOptions(nextFilter)
+      } else {
+        option.checked = false
+        const nextPrice = [...filterOptions.price]
+        const nextFilter = {...filterOptions, price: nextPrice}
+        setFilterOptions(nextFilter)
+      }
+    } else {
+      if (e.target.checked) {
+        option.checked = true
+        const nextColor = [...filterOptions.color]
+        const nextFilter = {...filterOptions, color: nextColor}
+        setFilterOptions(nextFilter)
+      } else {
+        option.checked = false
+        const nextColor = [...filterOptions.color]
+        const nextFilter = {...filterOptions, color: nextColor}
+        setFilterOptions(nextFilter)
+      }
+    }
+  }
+
   return (
     <Disclosure
       as="section"
@@ -24,7 +52,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {filterOptions.price.filter(f => f.checked === true).length + filterOptions.color.filter(f => f.checked === true).length} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
@@ -49,6 +77,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onChange={e => handleFilter(e, "price", option)}
                     />
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -69,6 +98,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onChange={e => handleFilter(e, "price", option)}
                     />
                     <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -109,7 +139,16 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            const ssortOptions = sortOptions.map((o => {
+                              if (o.name === option.name) {
+                                o.current = true
+                                return o
+                              } else {
+                                o.current = false
+                                return o
+                              }
+                            }))
+                            setSortOptions(ssortOptions)
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",

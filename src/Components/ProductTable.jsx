@@ -33,6 +33,9 @@ export default function ProductTable({ cart, updateCart }) {
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
 
+  const [pricechecked, setPriceChecked] = useState([])
+  const [colorchecked, setColorChecked] = useState([])
+
   useEffect(() => {
     let fetchProducts = async () => {
       console.info("Fetching Products...");
@@ -40,8 +43,33 @@ export default function ProductTable({ cart, updateCart }) {
       let body = await res.json();
       setProducts(body);
     };
+    if (localStorage.getItem('cart')) {
+      const parsedCart = JSON.parse(localStorage.getItem('cart')).map((product) => JSON.parse(product))
+      updateCart(parsedCart)
+    }
     fetchProducts();
-  });
+  }, []);
+
+  useEffect(() => {
+    const foundSort = sortOptions.find(o => o.current === true)
+    let sorted = []
+    if (!foundSort) {
+      return
+    }
+    if (foundSort.name === "Price") {
+      sorted = [...products].sort((a, b) => b.price - a.price)
+    } else {
+      sorted = [...products].sort((a, b) => b.releaseDate - a.releaseDate)
+    }
+    setProducts(sorted)
+  }, [sortOptions])
+
+  useEffect(() => {
+    const filtered = filterOptions.price.filter(o => o.checked)
+    const filtered2 = filterOptions.color.filter(o => o.checked)
+    setPriceChecked([...filtered])
+    setColorChecked([...filtered2])
+  }, [filterOptions])
 
   return (
     <div className="bg-white">
@@ -50,7 +78,20 @@ export default function ProductTable({ cart, updateCart }) {
         <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
+          {products.filter(p => {
+            return (
+              pricechecked.length > 0 ? (pricechecked.some(c => {
+                return p.price <= c.maxValue && p.price >= c.minValue
+              })) : true)
+          })
+          .filter(p => {
+            return (
+              colorchecked.length > 0 ? (colorchecked.some(c => {
+                return c.value === p.color
+              })) : true
+            )
+          })
+          .map((product) => (
             <a key={product.id} className="group">
               <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                 <img
@@ -74,7 +115,8 @@ export default function ProductTable({ cart, updateCart }) {
                         }
                       });
                     }
-
+                    const localCart = newCart.map(p => JSON.stringify(p))
+                    localStorage.setItem('cart', JSON.stringify(localCart))
                     updateCart(newCart);
                   }}
                 >
