@@ -9,7 +9,7 @@ function Home() {
 
   return (
     <main>
-      <NavBar {...{ setOpen }} />
+      <NavBar {...{ itemsInCart: cart.length, setOpen }} />
       <Cart {...{ open, setOpen, cart, updateCart }} />
       <ProductTable {...{ cart, updateCart }} />
     </main>
