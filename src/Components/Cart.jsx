@@ -1,8 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon, ShoppingCartIcon } from "@heroicons/react/outline";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import { useEffect } from "react";
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    const totalAmount = cart.reduce((acc, current) => {
+      return acc + current.price
+    },0)
+    setTotal(totalAmount);
+  },[cart])
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -11,7 +19,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
         onClose={() => {
           setOpen;
         }}
-      >
+        >
         <div className="absolute inset-0 overflow-hidden">
           <Transition.Child
             as={Fragment}
@@ -22,7 +30,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"  onClick={() => setOpen(false)}/>
           </Transition.Child>
 
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
@@ -106,7 +114,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>${total}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">

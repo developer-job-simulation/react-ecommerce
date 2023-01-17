@@ -1,12 +1,14 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
-import React, { Fragment } from "react";
+import React, { Fragment, useRef } from "react";
+import { useState } from "react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+
   return (
     <Disclosure
       as="section"
@@ -24,11 +26,21 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {filterOptions.price.filter((option) => option.checked).length + filterOptions.color.filter(option => option.checked).length} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button type="button" className="text-gray-500" onClick= {() => {
+              const updatePrices = [...filterOptions.price];
+              updatePrices.forEach((filter) => filter.checked = false);
+              const updateColors = [...filterOptions.color];
+              updateColors.forEach((filter) => filter.checked = false);
+              debugger;
+              setFilterOptions({
+                price: updatePrices,
+                color: updateColors
+              });
+            }}>
               Clear all
             </button>
           </div>
@@ -47,8 +59,17 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       name="price[]"
                       defaultValue={option.minValue}
                       type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"                    
+                      checked={option.checked}
+                      onChange={() => {
+                        const updatePrice = [...filterOptions.price];
+                        updatePrice[optionIdx].checked = !updatePrice[optionIdx].checked; 
+                        const updateFilters = {
+                          color: [...filterOptions.color],
+                          price: updatePrice
+                        };                        
+                        setFilterOptions(updateFilters);
+                      }}
                     />
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -68,7 +89,16 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.value}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
+                      onChange={() => {
+                        const updatedColor = [...filterOptions.color];
+                        updatedColor[optionIdx].checked = !updatedColor[optionIdx].checked; 
+                        const updateFilters = {
+                          price: [...filterOptions.price],
+                          color: updatedColor
+                        };                        
+                        setFilterOptions(updateFilters);
+                      }}
                     />
                     <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -109,7 +139,16 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            const newSortOptions = [...sortOptions].map((opt) => {
+                              if(opt.name === option.name) {
+                                opt.current = true;
+                              } else {
+                                opt.current = false;
+                              }
+                              return opt;
+                            })                            
+                            debugger;
+                            setSortOptions(newSortOptions)
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",

@@ -27,6 +27,39 @@ const getDefaultSortOptions = () => {
   ];
 };
 
+const sortProductsBy = (products, sortBy) => {
+  products.sort((productA, productB) => {
+    if(sortBy === 'Price') {
+      return productB.price - productA.price
+    } else if(sortBy === 'Newest') {
+      return productB.releaseDate - productA.releaseDate
+    }
+  })
+  return products;
+}
+const filterProductsBy = (products, filterOptions) => {
+  const selectedPriceFilters = filterOptions.price.filter((option) => option.checked);
+  const selectedColorFilters = filterOptions.color.filter((option) => option.checked);
+  const filteredProducts= products.filter(product => {
+    let isWithinSelectedPrice = false;
+    let isWithinSelectedColor = false;
+    if(selectedPriceFilters.length) {
+      isWithinSelectedPrice = selectedPriceFilters.some((fil) => product.price >= fil.minValue && product.price <= fil.maxValue)
+    } else {
+      isWithinSelectedPrice = true;
+    }
+    if(selectedColorFilters.length) {
+      isWithinSelectedColor = selectedColorFilters.some((fil) => product.color === fil.value)      
+    } else {
+      isWithinSelectedColor = true;
+    }
+
+    return isWithinSelectedColor && isWithinSelectedPrice
+  })
+
+  return filteredProducts
+}
+
 export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
 
@@ -43,6 +76,7 @@ export default function ProductTable({ cart, updateCart }) {
     fetchProducts();
   },[]);
 
+  const currentSortOption = sortOptions.find((option) => option.current)?.name
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -50,7 +84,7 @@ export default function ProductTable({ cart, updateCart }) {
         <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
+          {filterProductsBy(sortProductsBy(products, currentSortOption), filterOptions).map((product) => (
             <a key={product.id} className="group">
               <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                 <img
