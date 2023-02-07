@@ -35,9 +35,9 @@ This project was built using
 - React
 
 # How to get help?
+The best way to ask for help is to ask our Discord community.
 
-The best way is to ask a question in our Discord community.
-Please consider joining: https://discord.gg/7cAkUcKbjB
+[Click here to join the Jobsimulator.dev Discord](https://discord.gg/7cAkUcKbjB)
 
 # How to support us?
 If you found the project helpful and would like us to make more projects like this - please consider supporting us.
