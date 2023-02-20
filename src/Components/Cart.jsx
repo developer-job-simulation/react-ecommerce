@@ -51,10 +51,11 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                         </button>
                       </div>
                     </div>
-                    <div className="flex flex-col justify-center items-center flex-1">
+                    {cart.length == 0 && 
+                      <div className="flex flex-col justify-center items-center flex-1">
                       <ShoppingCartIcon className="h-12 w-12" />
-                      <p className="pt-2">Your Cart is Empty.</p>
-                    </div>
+                      <span className="pt-2">Your Cart is Empty.</span>
+                    </div>}
                     <div className="mt-8">
                       <div className="flow-root">
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
