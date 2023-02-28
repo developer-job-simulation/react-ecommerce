@@ -74,18 +74,13 @@ export default function ProductTable({ cart, updateCart }) {
                     className="hidden group-hover:block group-hover:opacity-50 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-black"
                     onClick={() => {
                       let newCart = cart.slice();
-
-                      if (!newCart.includes(product)) {
+                      const existingProduct = newCart.find((p) => p.id === product.id);
+                      if (existingProduct) {
+                        existingProduct.quantity += 1;
+                      } else {
                         product.quantity = 1;
                         newCart.push(product);
-                      } else {
-                        newCart.map((p) => {
-                          if (p.id === product.id) {
-                            p.quantity += 1;
-                          }
-                        });
                       }
-
                       updateCart(newCart);
                     }}
                   >
