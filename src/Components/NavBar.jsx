@@ -2,6 +2,8 @@ import { ShoppingBagIcon } from "@heroicons/react/outline";
 import React from "react";
 
 export default function NavBar({ setOpen, cart }) {
+  let totalQuantity = 0;
+  cart.forEach((p) => (totalQuantity += p.quantity));
   return (
     <div className="bg-white">
       <header className="relative">
@@ -42,7 +44,7 @@ export default function NavBar({ setOpen, cart }) {
                             aria-hidden="true"
                           />
                           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                            {cart.reduce((x, y) => x.quantity + y.quantity)}
+                            {totalQuantity}
                           </span>
                           <span className="sr-only">items in cart, view bag</span>
                         </button>
