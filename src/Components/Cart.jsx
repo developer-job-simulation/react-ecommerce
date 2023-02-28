@@ -3,6 +3,8 @@ import { XIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
+  let subtotal = 0;
+  cart.forEach((p) => (subtotal += p.quantity * p.price));
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -110,7 +112,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>${subtotal}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
