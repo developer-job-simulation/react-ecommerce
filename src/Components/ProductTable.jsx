@@ -27,6 +27,7 @@ const getDefaultSortOptions = () => {
   ];
 };
 
+let originalProducts = [];
 export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
 
@@ -39,15 +40,43 @@ export default function ProductTable({ cart, updateCart }) {
       let res = await fetch("http://localhost:3001/products");
       let body = await res.json();
       setProducts(body);
+      originalProducts = body;
     };
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    let newProducts = [...originalProducts];
+    let priceFilters = filterOptions.price.filter((option) => option.checked);
+    let colorFilters = filterOptions.color.filter((option) => option.checked);
+
+    if (priceFilters.length != 0) {
+      newProducts = newProducts.filter((product) => {
+        let resultArray = priceFilters.map(
+          (filter) => filter.minValue < product.price && filter.maxValue > product.price
+        );
+        return resultArray.reduce((x, y) => x || y, false);
+      });
+    }
+
+    if (colorFilters.length != 0) {
+      newProducts = newProducts.filter((product) => {
+        let colorPasses = true;
+        colorFilters.map((filter) => (colorPasses = filter.value == product.color));
+        return colorPasses;
+      });
+    }
+
+    setProducts(newProducts);
+  }, [filterOptions]);
 
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
+        <ProductFilters
+          {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions, getDefaultFilterOptions }}
+        />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products
