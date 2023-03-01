@@ -30,7 +30,21 @@ jobs:
         run: npm run dev:frontend &
 
       - name: start backend
-        run: npm run dev:backend &
+        run: npm run dev:backend > /logs.txt &
 
       - name: Run Tests
         run: node .github/workflows/test.js
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs
+          path: /logs.txt
+
+      - name: Upload screenshot
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshot
+          path: /test.png
