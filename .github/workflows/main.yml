@@ -1,0 +1,50 @@
+name: JobSimulator.dev Test Checker
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.31.0-focal
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci && cd .github/workflows && npm ci && cd ../..
+
+      - name: start frontend
+        run: npm run dev:frontend &
+
+      - name: start backend
+        run: npm run dev:backend > /logs.txt &
+
+      - name: Run Tests
+        run: node .github/workflows/test.js
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs
+          path: /logs.txt
+
+      - name: Upload screenshot
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshot
+          path: /test.png
