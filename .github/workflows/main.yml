@@ -30,7 +30,7 @@ jobs:
         run: npm run dev:frontend &
 
       - name: start backend
-        run: npm run dev:backend &
+        run: npm run dev:backend > /logs.txt &
 
       - name: Run Tests
         run: node .github/workflows/test.js
