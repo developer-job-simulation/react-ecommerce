@@ -1,48 +1,47 @@
-# react-ecommerce by jobsimulator.dev
+![React-Ecommerce-by-JobSimulator](https://user-images.githubusercontent.com/2349518/221032791-f8ece027-447f-45e8-84c0-f4d7a847b570.svg)
 
-# How to start working
+# React Ecommerce by JobSimulator.dev
 
-1. Fork this repo and clone it locally. Click [here](https://github.com/developer-job-simulation/react-ecommerce/fork) to fork this repo.
-2. Fix the issue
-3. Create Pull Request to this repository
+This is a simple E-Commerce site made with React and TailwindCSS. Your job is to fix 8 issues:
 
-# How to run app locally
+1. [Sort Products by Price and Release Date](https://github.com/developer-job-simulation/react-ecommerce/issues/1)
+1. [Cart Persistence on Refresh](https://github.com/developer-job-simulation/react-ecommerce/issues/2)
+1. [Add Product Filters Functionality](https://github.com/developer-job-simulation/react-ecommerce/issues/3)
+1. [Product Fetch is Causing Infinite Loop](https://github.com/developer-job-simulation/react-ecommerce/issues/4)
+1. [Need to display 'Empty Cart' When Cart is Empty on Cart Page](https://github.com/developer-job-simulation/react-ecommerce/issues/5)
+1. [Update Cart in Nav with Cart Size](https://github.com/developer-job-simulation/react-ecommerce/issues/6)
+1. [Cart not closing when User Clicks Gray Region](https://github.com/developer-job-simulation/react-ecommerce/issues/7)
+1. [Subtotal Is not Implemented on Cart Page](https://github.com/developer-job-simulation/react-ecommerce/issues/8)
 
-First install the node dependencies
+## Learning Objectives
 
-```bash
-npm i
-```
-and then run the app locally with
+You will practice and gain experience with:
 
-```bash
-npm run dev:frontend
-npm run dev:backend
-```
+- Styling webapps with TailwindCSS
+- Using React Hooks (useState, useEffect)
+- Manipulating, aggregating, sorting, and displaying data
+- Working with Tables in React
+- Implementing a Shopping Cart
+- Working with Local Storage
+- Currency Formatting
+- Pulling Data from APIs
 
-then go to http://localhost:3000
+## How to start working
 
-Once you're running locally, start working on [these issues first](https://github.com/developer-job-simulation/react-ecommerce/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22Good+First+Issue%22).
+1. Fork this repo and clone it locally.
+1. Install the dependencies by running `npm i`
+1. Run the app locally by running `npm run dev:frontend` to start the frontend, and `npm run dev:backend` to start the backend.
+1. Visit http://localhost:3000 to see the site.
+1. Fix all the issues (hints are provided as TODO comments in the code)
+1. Once all your solutions are complete, create a single Pull Request to this repository
+1. Check if your solutions passes our automated tests.
 
-To make working with Tailwind easy, we recommend you install [TailwindCSS Intellisense in VSCode](https://tailwindcss.com/docs/editor-setup#intelli-sense-for-vs-code) to add autocomplete + linting. 
+## Need help?
 
-# Stack
-
-This project was built using
-
-- Vite
-- TailwindCSS
-- React
-
-# How to get help?
 The best way to ask for help is to ask our Discord community.
 
-[Click here to join the Jobsimulator.dev Discord](https://discord.gg/7cAkUcKbjB)
+[Click here to join the Jobsimulator.dev Discord](https://discord.com/invite/7cAkUcKbjB).
 
-# How to support us?
-If you found the project helpful and would like us to make more projects like this - please consider supporting us.
+## Want more challenges?
 
-We offer premium services for this project. If you decide to use those, you will both get extra value out of the project and at the same time you will give us motivation to keep going to create even better projects.
-- Video guide of a senior dev going through all the issues and fixing them following the industry best practices - $15
-
-You can purchase those here: https://jobsimulator.gumroad.com/l/react-ecommerce
+Browse our [list of challenges](https://jobsimulator.gumroad.com/) and [join our Discord](https://discord.gg/6VsSMZaM7q) to get notified when new challenges are released.
