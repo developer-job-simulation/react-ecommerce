@@ -5,7 +5,7 @@ import ProductTable from "../Components/ProductTable";
 
 function Home() {
   const [open, setOpen] = useState(false);
-  const [cart, updateCart] = useState(() => {
+  const [cart, setCartState] = useState(() => {
     const localCart = JSON.parse(localStorage.getItem('cart'))
     return localCart ? localCart : []
   });
@@ -15,6 +15,11 @@ function Home() {
   // But this implementation isn't much better, since I'm reading from disk twice on first load, and then again every time the cart is updated.
   // The alternative that I'm aware of is to put it in the onClick actions for adding and removing from the cart, which probably makes more sense at this point in time.
   // That way, we're only reading/writing to disk as actually necessary, but it does spread the code to do the same thing across multiple components.
+  function updateCart(newCart) {
+    localStorage.setItem('cart', JSON.stringify(newCart))
+    setCartState(newCart)
+  }
+  
   useEffect(() => {
     if (cart != JSON.parse(localStorage.getItem('cart'))){
       localStorage.setItem('cart', JSON.stringify(cart))
