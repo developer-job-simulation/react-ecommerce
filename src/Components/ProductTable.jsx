@@ -41,8 +41,9 @@ export default function ProductTable({ cart, updateCart }) {
       setProducts(body);
     };
     fetchProducts();
-  });
+  }, []);
 
+  
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
