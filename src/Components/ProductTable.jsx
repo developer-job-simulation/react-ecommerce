@@ -33,15 +33,29 @@ export default function ProductTable({ cart, updateCart }) {
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
 
+  // useEffect(() => {
+  //   let fetchProducts = async () => {
+  //     console.info("Fetching Products...");
+  //     let res = await fetch("http://localhost:3001/products");
+  //     let body = await res.json();
+  //     setProducts(body);
+  //   };
+  //   fetchProducts();
+  // },[]);
+
+  //! fixed product infinite fetch loop
   useEffect(() => {
-    let fetchProducts = async () => {
-      console.info("Fetching Products...");
-      let res = await fetch("http://localhost:3001/products");
-      let body = await res.json();
-      setProducts(body);
-    };
-    fetchProducts();
-  });
+    fetch("http://localhost:3001/products")
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data);
+        console.info("Fetching Products...");
+      })
+      .catch(err => {
+        console.alert(err);
+      })
+
+  },[])
 
   return (
     <div className="bg-white">
