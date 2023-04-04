@@ -4,8 +4,8 @@ import NavBar from "../Components/NavBar";
 import ProductTable from "../Components/ProductTable";
 
 function Home() {
-  const [open, setOpen] = useState(false);
   const initialCart = JSON.parse(localStorage.getItem('cart-item')) || [];
+  const [open, setOpen] = useState(false);
   const [cart, updateCart] = useState(initialCart);
 
 

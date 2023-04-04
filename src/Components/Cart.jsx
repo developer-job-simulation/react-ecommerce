@@ -8,7 +8,8 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
   const calculate_cart_total = () => {
     let sum = 0
     cart.forEach((product) => {
-      sum += product.price
+      // sum += product.price 
+      sum = sum + (product.price * product.quantity)
     })
     return sum
   }
@@ -16,8 +17,8 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
   useEffect(() => {
     // localStorage can only store string values thats
     // why we use JSON.stringify
-  localStorage.setItem(`cart-item${cart.id}`, JSON.stringify(cart));
-}, [cart, cart.id]);
+  localStorage.setItem(`cart-item`, JSON.stringify(cart));
+}, [cart]);
 
 
 	return (
@@ -60,8 +61,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
 									<div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
 										<div className="flex items-start justify-between">
 											<Dialog.Title className="text-lg font-medium text-gray-900">
-												{" "}
-												Shopping Cart{" "}
+												Shopping Cart
 											</Dialog.Title>
 											<div className="ml-3 flex h-7 items-center">
 												<button
@@ -89,8 +89,8 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
 													className="-my-6 divide-y divide-gray-200"
 												>
 													{/* turnary showing empty cart if not items */}
-													{cart.map((product) => (
-														<li key={product.id} className="flex py-6">
+													{cart.map((product, index) => (
+														<li key={index} className="flex py-6">
 															<div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
 																<img
 																	src={product.imageSrc}
