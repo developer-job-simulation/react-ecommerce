@@ -7,6 +7,9 @@ function classNames(...classes) {
 }
 
 export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+  const sort_list = () => {
+    setSortOptions(sortOptions === 'arc' ? 'desc' : 'asc')
+  }
 
   return (
     <Disclosure
@@ -110,8 +113,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO:
-                            setSortOptions()
+                            // TODO:                    
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
