@@ -10,6 +10,9 @@
 
 - Issue #4 Todos
     - [x] Fix the effect hook to stop infinite loop
+
+- Issue #6 Todos
+    - [x] Link the cart size to the nav
     
 - Issue #7 Todos
     - [x] The cart page closes when user clicks gray region
