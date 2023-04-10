@@ -19,3 +19,6 @@
     
 - Issue #7 Todos
     - [x] The cart page closes when user clicks gray region
+
+- Issue #8 Todos
+    - [x] Fix cart subtotal to accurately reflect items in cart

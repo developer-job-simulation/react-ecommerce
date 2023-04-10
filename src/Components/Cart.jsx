@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
-import { getCartSize } from "../Utilities";
+import { getCartSize, getCartSubtotal, formatAsUSD } from "../Utilities";
 
 function CartItemList({ cart, updateCart }) {
   return (
@@ -124,7 +124,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>{ formatAsUSD(getCartSubtotal(cart)) }</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
