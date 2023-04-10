@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductFilters from "./ProductFilters";
+import useProductSort from "./../Utilities/useProductSort";
 
 const getDefaultFilterOptions = () => {
   return {
@@ -42,6 +43,8 @@ export default function ProductTable({ cart, updateCart }) {
     };
     fetchProducts();
   }, []);
+
+  useProductSort(sortOptions, products, setProducts);
 
   return (
     <div className="bg-white">

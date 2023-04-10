@@ -4,7 +4,7 @@
 
 This is a simple E-Commerce site made with React and TailwindCSS. Your job is to fix 8 issues:
 
-1. [Sort Products by Price and Release Date](https://github.com/developer-job-simulation/react-ecommerce/issues/1)
+1. ~~[Sort Products by Price and Release Date](https://github.com/developer-job-simulation/react-ecommerce/issues/1)~~
 1. ~~[Cart Persistence on Refresh](https://github.com/developer-job-simulation/react-ecommerce/issues/2)~~
 1. [Add Product Filters Functionality](https://github.com/developer-job-simulation/react-ecommerce/issues/3)
 1. ~~[Product Fetch is Causing Infinite Loop](https://github.com/developer-job-simulation/react-ecommerce/issues/4)~~
