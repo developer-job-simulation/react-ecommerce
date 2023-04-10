@@ -1,10 +1,12 @@
 <!-- - Issue #1 Todos
     - [ ] On Click of Sort by Price, products should be sorted by Price.
     - [ ] On Click of Sort by Newest, products should be sorted by Release Date.
-    
-- Issue #2 Todos
-    - [ ] something
+--> 
 
+- Issue #2 Todos
+    - [x] Cart is persisted when user does refresh
+
+<!--
 - Issue #3 Todos
     - something -->
 
