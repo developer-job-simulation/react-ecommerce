@@ -10,3 +10,6 @@
 
 - Issue #4 Todos
     - [x] Fix the effect hook to stop infinite loop
+    
+- Issue #7 Todos
+    - [x] The cart page closes when user clicks gray region

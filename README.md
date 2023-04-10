@@ -10,7 +10,7 @@ This is a simple E-Commerce site made with React and TailwindCSS. Your job is to
 1. ~~[Product Fetch is Causing Infinite Loop](https://github.com/developer-job-simulation/react-ecommerce/issues/4)~~
 1. [Need to display 'Empty Cart' When Cart is Empty on Cart Page](https://github.com/developer-job-simulation/react-ecommerce/issues/5)
 1. [Update Cart in Nav with Cart Size](https://github.com/developer-job-simulation/react-ecommerce/issues/6)
-1. [Cart not closing when User Clicks Gray Region](https://github.com/developer-job-simulation/react-ecommerce/issues/7)
+1. ~~[Cart not closing when User Clicks Gray Region](https://github.com/developer-job-simulation/react-ecommerce/issues/7)~~
 1. [Subtotal Is not Implemented on Cart Page](https://github.com/developer-job-simulation/react-ecommerce/issues/8)
 
 ## Learning Objectives
