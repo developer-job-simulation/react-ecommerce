@@ -11,6 +11,9 @@
 - Issue #4 Todos
     - [x] Fix the effect hook to stop infinite loop
 
+- Issue #5 Todos
+    - [x] Implement mockup on cart page (when cart is empty) using flexbox
+
 - Issue #6 Todos
     - [x] Link the cart size to the nav
     

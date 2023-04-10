@@ -1,9 +1,6 @@
 import { ShoppingBagIcon } from "@heroicons/react/outline";
 import React from "react";
-
-function getCartSize(cart) {
-  return cart.reduce((prev, curr) => prev + curr.quantity, 0);
-}
+import { getCartSize } from "../Utilities";
 
 export default function NavBar({ setOpen, cart }) {
   return (

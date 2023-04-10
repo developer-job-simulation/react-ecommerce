@@ -1,6 +1,69 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { XIcon } from "@heroicons/react/outline";
+import { XIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
+import { getCartSize } from "../Utilities";
+
+function CartItemList({ cart, updateCart }) {
+  return (
+    <div className="mt-8">
+      <div className="flow-root">
+        <ul role="list" className="-my-6 divide-y divide-gray-200">
+          {cart.map((product) => (
+            <li key={product.id} className="flex py-6">
+              <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                <img
+                  src={product.imageSrc}
+                  alt={product.imageAlt}
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
+
+              <div className="ml-4 flex flex-1 flex-col">
+                <div>
+                  <div className="flex justify-between text-base font-medium text-gray-900">
+                    <h3>{product.name}</h3>
+                    <p className="ml-4">${product.price}</p>
+                  </div>
+                </div>
+                <div className="flex flex-1 items-end justify-between text-sm">
+                  <p className="text-gray-500">Qty {product.quantity}</p>
+
+                  <div className="flex">
+                    <button
+                      onClick={() => {
+                        let newCart = cart.filter((p) => {
+                          if (p.id === product.id) {
+                            p.quantity -= 1;
+                          }
+
+                          return p.quantity > 0;
+                        });
+                        updateCart(newCart);
+                      }}
+                      type="button"
+                      className="font-medium text-gray-500 hover:text-black"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+function EmptyCartDisplay() {
+  return (
+    <div className="flex-1 flex flex-col justify-center items-center">
+      <ShoppingCartIcon className="w-12" />
+      <p className="pt-2">Your Cart is Empty.</p>
+    </div>
+  );
+}
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
   return (
@@ -37,7 +100,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
             >
               <div className="pointer-events-auto w-screen max-w-md">
                 <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                  <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+                  <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6 flex flex-col">
                     <div className="flex items-start justify-between">
                       <Dialog.Title className="text-lg font-medium text-gray-900"> Shopping cart </Dialog.Title>
                       <div className="ml-3 flex h-7 items-center">
@@ -52,54 +115,10 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                       </div>
                     </div>
 
-                    <div className="mt-8">
-                      <div className="flow-root">
-                        <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {cart.map((product) => (
-                            <li key={product.id} className="flex py-6">
-                              <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                <img
-                                  src={product.imageSrc}
-                                  alt={product.imageAlt}
-                                  className="h-full w-full object-cover object-center"
-                                />
-                              </div>
-
-                              <div className="ml-4 flex flex-1 flex-col">
-                                <div>
-                                  <div className="flex justify-between text-base font-medium text-gray-900">
-                                    <h3>{product.name}</h3>
-                                    <p className="ml-4">${product.price}</p>
-                                  </div>
-                                </div>
-                                <div className="flex flex-1 items-end justify-between text-sm">
-                                  <p className="text-gray-500">Qty {product.quantity}</p>
-
-                                  <div className="flex">
-                                    <button
-                                      onClick={() => {
-                                        let newCart = cart.filter((p) => {
-                                          if (p.id === product.id) {
-                                            p.quantity -= 1;
-                                          }
-
-                                          return p.quantity > 0;
-                                        });
-                                        updateCart(newCart);
-                                      }}
-                                      type="button"
-                                      className="font-medium text-gray-500 hover:text-black"
-                                    >
-                                      Remove
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
+                    { getCartSize(cart) > 0 ? 
+                      <CartItemList { ...{ cart, updateCart} } /> :
+                      <EmptyCartDisplay />
+                    }
                   </div>
 
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
