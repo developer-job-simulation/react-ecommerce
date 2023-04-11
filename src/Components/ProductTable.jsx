@@ -92,7 +92,7 @@ export default function ProductTable({ cart, updateCart }) {
                   onClick={() => {
                     let newCart = cart.slice();
 
-                    if (!newCart.includes(product)) {
+                    if (!newCart.some(item => item.id === product.id)) {
                       product.quantity = 1;
                       newCart.push(product);
                     } else {
