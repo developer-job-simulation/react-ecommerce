@@ -28,6 +28,21 @@ const getDefaultSortOptions = () => {
   ];
 };
 
+function getProductVisibility(product, filterOptions) {
+  for (let i = 0; i < filterOptions.price.length; i++) {
+    const filter = filterOptions.price[i];
+    if (!filter.checked) continue;
+    if (product.price < filter.minValue || product.price > filter.maxValue)
+      return false;
+  }
+
+  for (let i = 0; i < filterOptions.color.length; i++) {
+    const filter = filterOptions.color[i];
+    if (filter.checked && product.color !== filter.value) return false;
+  }
+  return true;
+}
+
 export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
 
@@ -39,22 +54,32 @@ export default function ProductTable({ cart, updateCart }) {
       console.info("Fetching Products...");
       let res = await fetch("http://localhost:3001/products");
       let body = await res.json();
-      setProducts(body);
+      setProducts(body.map((prod) => ({ ...prod, show: true })));
     };
     fetchProducts();
   }, []);
 
   useProductSort(sortOptions, products, setProducts);
 
+  useEffect(() => {
+    setProducts((prevProducts) => {
+      let newProducts = prevProducts.map((product) => {
+        product.show = getProductVisibility(product, filterOptions);
+        return product;
+      });
+      return newProducts;
+    })
+  }, [filterOptions]);
+
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
+        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions, getDefaultFilterOptions }} />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
-            <a key={product.id} className="group">
+            <a key={product.id} className={`group ${product.show ? "" : "hidden"}`}>
               <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                 <img
                   src={product.imageSrc}
