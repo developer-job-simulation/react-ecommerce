@@ -56,7 +56,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                       <div className="flow-root">
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
                           {cart.map((product) => (
-                            <li key={product.id} className="flex py-6">
+                            <li role="listitem" key={product.id} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
                                   src={product.imageSrc}
