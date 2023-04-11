@@ -26,6 +26,4 @@
     - [x] Fix cart subtotal to accurately reflect items in cart
 
 - Misc
-    - [ ] Make PR on project's [test repo](https://github.com/developer-job-simulation/react-ecommerce-tests/blob/main/test.js) to update the test for issue #2 to 
-        1. select the element whose role is `list` instead of `listitem` OR
-        1. update this project's `Cart` component's corresponding `<ul>` element's `role` attribute to `listitem` from `list`
+    - [ ] Make PR on project's [test repo](https://github.com/developer-job-simulation/react-ecommerce-tests/blob/main/test.js) to update the test for issue #2 to update this project's `Cart` component's `<li>` elements to include a `role` attribute equal to `listitem`
