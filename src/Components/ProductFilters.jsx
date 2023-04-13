@@ -1,12 +1,21 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
-import React, { Fragment } from "react";
+import React, { Fragment ,useState} from "react";
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+
+
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions,checkedPriceState,handleCheckboxPriceChange,checkedColorState,handleCheckboxColorChange }) {
+  const countCheckedBoxes = () =>{
+    return checkedPriceState.filter(Boolean).length+checkedColorState.filter(Boolean).length;
+  }
+ 
+
   return (
     <Disclosure
       as="section"
@@ -24,7 +33,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {countCheckedBoxes()} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
@@ -48,8 +57,14 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      //defaultChecked={option.checked}
+                      checked={checkedPriceState[optionIdx]}
+                      onChange={()=> handleCheckboxPriceChange(optionIdx)}
+                      
+                      
+
                     />
+                    
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
                     </label>
@@ -68,7 +83,9 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.value}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      //defaultChecked={option.checked}
+                      checked={checkedColorState[optionIdx]}
+                      onChange={()=> handleCheckboxColorChange(optionIdx)}
                     />
                     <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -108,8 +125,14 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                     <Menu.Item key={option.name}>
                       {({ active }) => (
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
                             // TODO
+                            // setSortOptions=e.currentTarget.textContent;
+                            //setSortOptions(...sortOptions.map((option)=>{if (option.name === e.currentTarget.textContent){option.current=true}}))
+                            setSortOptions(state => state.map(s => s.name === e.currentTarget.textContent ? { ...s, current: true } : { ...s, current: false }))
+
+                            console.log(sortOptions)
+
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
