@@ -33,7 +33,7 @@ let bubbleSortDescPrice = (products) => {
 
   for (var i = 0; i <= products.length - 1; i++) {
     for (var j = 0; j < (products.length - i - 1); j++) {
-      if (products[j].price < products[j + 1].price) {
+      if (products[j].price > products[j + 1].price) {
         var temp = products[j]
         products[j] = products[j + 1]
         products[j + 1] = temp
@@ -47,7 +47,7 @@ let bubbleSortDescDate = (products) => {
 
   for (var i = 0; i <= products.length - 1; i++) {
     for (var j = 0; j < (products.length - i - 1); j++) {
-      if (products[j].releaseDate < products[j + 1].releaseDate) {
+      if (products[j].releaseDate > products[j + 1].releaseDate) {
         var temp = products[j]
         products[j] = products[j + 1]
         products[j + 1] = temp
