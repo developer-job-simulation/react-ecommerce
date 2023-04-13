@@ -130,7 +130,7 @@ export default function ProductTable({ cart, updateCart }) {
                   onClick={() => {
                   
                     let newCart = cart.slice();
-                    console.log(checkedState)
+                    
                     
                     
                    // console.log(product.id)
