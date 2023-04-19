@@ -1,5 +1,6 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
+
 import React, { Fragment } from "react";
 
 function classNames(...classes) {
@@ -56,6 +57,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                   </div>
                 ))}
               </div>
+              
             </fieldset>
             <fieldset>
               <legend className="block font-medium">Color</legend>
