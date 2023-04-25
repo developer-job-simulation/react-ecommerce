@@ -1,12 +1,19 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
-import React, { Fragment } from "react";
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid';
+import React, { Fragment } from 'react';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({
+  filterOptions,
+  setFilterOptions,
+  sortOptions,
+  setSortOptions,
+  products,
+  setProducts,
+}) {
   return (
     <Disclosure
       as="section"
@@ -41,7 +48,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Price</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.price.map((option, optionIdx) => (
-                  <div key={option.minValue} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.minValue}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`price-${optionIdx}`}
                       name="price[]"
@@ -50,7 +60,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
                     />
-                    <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`price-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -61,7 +74,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Color</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.color.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.value}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`color-${optionIdx}`}
                       name="color[]"
@@ -70,7 +86,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
                     />
-                    <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`color-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -110,11 +129,33 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                         <button
                           onClick={() => {
                             // TODO
+                            console.log(sortOptions);
+                            if (option.name === 'Price') {
+                              setSortOptions([
+                                { name: 'Price', current: true },
+                                { name: 'Newest', current: false },
+                              ]);
+                              setProducts(
+                                products.sort((a, b) => b.price - a.price)
+                              );
+                            } else if (option.name === 'Newest') {
+                              setSortOptions([
+                                { name: 'Price', current: false },
+                                { name: 'Newest', current: true },
+                              ]);
+                              setProducts(
+                                products.sort(
+                                  (a, b) => b.releaseDate - a.releaseDate
+                                )
+                              );
+                            }
                           }}
                           className={classNames(
-                            option.current ? "font-medium text-gray-900" : "text-gray-500",
-                            active ? "bg-gray-100" : "",
-                            "block px-4 py-2 text-sm"
+                            option.current
+                              ? 'font-medium text-gray-900'
+                              : 'text-gray-500',
+                            active ? 'bg-gray-100' : '',
+                            'block px-4 py-2 text-sm'
                           )}
                         >
                           {option.name}
