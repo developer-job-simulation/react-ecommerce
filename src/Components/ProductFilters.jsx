@@ -15,8 +15,24 @@ export default function ProductFilters({
   products,
   setProducts,
   allproducts,
+  getDefaultFilterOptions,
+  selectedByPrice,
+  setselectedByPrice,
+  selectedByColor,
+  setselectedByColor,
 }) {
-  const [nbr_filters, set_Nbr_Filters] = useState(0);
+  const [nbr_filters_price, set_Nbr_Filters_price] = useState(0);
+  const [nbr_filters_color, set_Nbr_Filters_color] = useState(0);
+  const uncheckRadio = () => {
+    for (let i = 0; i < filterOptions.price.length; i++) {
+      let price_radio = document.getElementById(`price-${i}`);
+      price_radio.checked = false;
+    }
+    for (let i = 0; i < filterOptions.color.length; i++) {
+      let color_radio = document.getElementById(`color-${i}`);
+      color_radio.checked = false;
+    }
+  };
 
   return (
     <Disclosure
@@ -35,16 +51,20 @@ export default function ProductFilters({
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              {nbr_filters} Filters
+              {nbr_filters_price + nbr_filters_color} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
             <button
               type="button"
               className="text-gray-500"
-              onClick={(e) => {
+              onClick={() => {
                 setProducts(allproducts);
-                console.log(products);
+                set_Nbr_Filters_price(0);
+                set_Nbr_Filters_color(0);
+
+                setFilterOptions(getDefaultFilterOptions());
+                uncheckRadio();
               }}
             >
               Clear all
@@ -79,13 +99,14 @@ export default function ProductFilters({
                               element.checked = false;
                           }
                         });
+                        let selected_array = [];
 
                         let selected_products = filterOptions.price.filter(
                           function (x) {
                             return x.checked === true;
                           }
                         );
-                        let selected_array = [];
+
                         selected_products.forEach((element) => {
                           selected_array.push(
                             allproducts.filter(function (item) {
@@ -96,36 +117,19 @@ export default function ProductFilters({
                             })
                           );
                         });
+                        if (selected_array.length > 0) {
+                          setProducts(selected_array.flat(1));
+                          setselectedByPrice(selected_array.flat(1));
+                        } else {
+                          if (selectedByColor.length > 0) {
+                            setProducts(selectedByColor);
+                          } else {
+                            setProducts(allproducts);
+                            setselectedByPrice(allproducts);
+                          }
+                        }
 
-                        setProducts(selected_array.flat(1));
-
-                        set_Nbr_Filters(selected_array.length);
-
-                        console.log(nbr_filters);
-
-                        // setFilterOptions(products);
-                        // console.log(
-                        //   selected_array.reduce(function (acc, x) {
-                        //     for (var key in x) acc[key] = x[key];
-                        //     return acc;
-                        //   }, {})
-                        // );
-                        // setProducts(selected_array);
-
-                        // let min_price = Math.min(
-                        //   ...selected_products.map((item) => item.minValue)
-                        // );
-                        // let max_price = Math.max(
-                        //   ...selected_products.map((item) => item.maxValue)
-                        // );
-
-                        // setProducts(
-                        //   products.filter(function (item) {
-                        //     return (
-                        //       item.price > min_price && item.price < max_price
-                        //     );
-                        //   })
-                        // );
+                        set_Nbr_Filters_price(selected_array.length);
                       }}
                     />
                     <label
@@ -153,6 +157,53 @@ export default function ProductFilters({
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onClick={(e) => {
+                        filterOptions.color.forEach((element) => {
+                          if (element.value === e.target.value) {
+                            if (element.checked === false) {
+                              element.checked = true;
+                            } else if (element.checked === true)
+                              element.checked = false;
+                          }
+                        });
+
+                        let selected_products_color =
+                          filterOptions.color.filter(function (x) {
+                            return x.checked === true;
+                          });
+
+                        let selected_array_color = [];
+                        if (selected_products_color.length > 0) {
+                          selected_products_color.forEach((element) => {
+                            if (allproducts !== products) {
+                              selected_array_color.push(
+                                products.filter(function (item) {
+                                  return item.color === element.value;
+                                })
+                              );
+
+                              setProducts(selected_array_color.flat(1));
+                            } else {
+                              selected_array_color.push(
+                                allproducts.filter(function (item) {
+                                  return item.color === element.value;
+                                })
+                              );
+                              setProducts(selected_array_color.flat(1));
+                              setselectedByColor(selected_array_color.flat(1));
+                            }
+                          });
+                        } else {
+                          if (selectedByPrice.length > 0) {
+                            setProducts(selectedByPrice);
+                          } else {
+                            setProducts(allproducts);
+                            // setselectedByColor(allproducts);
+                          }
+                        }
+
+                        set_Nbr_Filters_color(selected_array_color.length);
+                      }}
                     />
                     <label
                       htmlFor={`color-${optionIdx}`}

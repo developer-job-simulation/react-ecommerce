@@ -37,6 +37,8 @@ export default function ProductTable({ cart, updateCart }) {
   let [allproducts, setallProducts] = useState([]);
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
+  const [selectedByPrice, setselectedByPrice] = useState([]);
+  const [selectedByColor, setselectedByColor] = useState([]);
 
   useEffect(() => {
     let fetchProducts = async () => {
@@ -62,6 +64,11 @@ export default function ProductTable({ cart, updateCart }) {
             products,
             setProducts,
             allproducts,
+            getDefaultFilterOptions,
+            selectedByPrice,
+            setselectedByPrice,
+            selectedByColor,
+            setselectedByColor,
           }}
         />
 
