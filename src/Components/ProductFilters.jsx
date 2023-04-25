@@ -1,6 +1,7 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { useState } from 'react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -13,7 +14,10 @@ export default function ProductFilters({
   setSortOptions,
   products,
   setProducts,
+  allproducts,
 }) {
+  const [nbr_filters, set_Nbr_Filters] = useState(0);
+
   return (
     <Disclosure
       as="section"
@@ -31,11 +35,18 @@ export default function ProductFilters({
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {nbr_filters} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button
+              type="button"
+              className="text-gray-500"
+              onClick={(e) => {
+                setProducts(allproducts);
+                console.log(products);
+              }}
+            >
               Clear all
             </button>
           </div>
@@ -59,6 +70,63 @@ export default function ProductFilters({
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onClick={(e) => {
+                        filterOptions.price.forEach((element) => {
+                          if (element.minValue.toString() === e.target.value) {
+                            if (element.checked === false) {
+                              element.checked = true;
+                            } else if (element.checked === true)
+                              element.checked = false;
+                          }
+                        });
+
+                        let selected_products = filterOptions.price.filter(
+                          function (x) {
+                            return x.checked === true;
+                          }
+                        );
+                        let selected_array = [];
+                        selected_products.forEach((element) => {
+                          selected_array.push(
+                            allproducts.filter(function (item) {
+                              return (
+                                item.price > element.minValue &&
+                                item.price < element.maxValue
+                              );
+                            })
+                          );
+                        });
+
+                        setProducts(selected_array.flat(1));
+
+                        set_Nbr_Filters(selected_array.length);
+
+                        console.log(nbr_filters);
+
+                        // setFilterOptions(products);
+                        // console.log(
+                        //   selected_array.reduce(function (acc, x) {
+                        //     for (var key in x) acc[key] = x[key];
+                        //     return acc;
+                        //   }, {})
+                        // );
+                        // setProducts(selected_array);
+
+                        // let min_price = Math.min(
+                        //   ...selected_products.map((item) => item.minValue)
+                        // );
+                        // let max_price = Math.max(
+                        //   ...selected_products.map((item) => item.maxValue)
+                        // );
+
+                        // setProducts(
+                        //   products.filter(function (item) {
+                        //     return (
+                        //       item.price > min_price && item.price < max_price
+                        //     );
+                        //   })
+                        // );
+                      }}
                     />
                     <label
                       htmlFor={`price-${optionIdx}`}
@@ -128,8 +196,6 @@ export default function ProductFilters({
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
-                            console.log(sortOptions);
                             if (option.name === 'Price') {
                               setSortOptions([
                                 { name: 'Price', current: true },

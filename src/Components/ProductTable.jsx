@@ -34,6 +34,7 @@ const getDefaultSortOptions = () => {
 
 export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
+  let [allproducts, setallProducts] = useState([]);
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
 
@@ -43,6 +44,7 @@ export default function ProductTable({ cart, updateCart }) {
       let res = await fetch('http://localhost:3001/products');
       let body = await res.json();
       setProducts(body);
+      setallProducts(body);
     };
     fetchProducts();
   }, []);
@@ -59,6 +61,7 @@ export default function ProductTable({ cart, updateCart }) {
             setSortOptions,
             products,
             setProducts,
+            allproducts,
           }}
         />
 
