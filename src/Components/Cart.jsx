@@ -4,8 +4,6 @@ import React, { Fragment, useEffect } from 'react';
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
-  
-
   const displaySubtotal = () => {
     let subtotal = 0;
     cart.forEach((element) => {
@@ -111,7 +109,6 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                                             return p.quantity > 0;
                                           });
                                           updateCart(newCart);
-                                          
                                         }}
                                         type="button"
                                         className="font-medium text-gray-500 hover:text-black"
@@ -127,7 +124,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                             <li className="flex flex-col h-96 items-center justify-center">
                               <ShoppingCartIcon className="max-w-[3rem]" />
                               <h1 className="capitalize pt-2">
-                                your cart <span>is</span> empty
+                                your cart <span>is</span> empty.
                               </h1>
                             </li>
                           )}
@@ -139,7 +136,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6 ">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$ {displaySubtotal()}</p>
+                      <p>${displaySubtotal()}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">
                       Shipping and taxes calculated at checkout.

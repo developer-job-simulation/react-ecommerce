@@ -253,7 +253,7 @@ export default function ProductFilters({
                                 { name: 'Newest', current: false },
                               ]);
                               setProducts(
-                                products.sort((a, b) => b.price - a.price)
+                                products.sort((a, b) => a.price - b.price)
                               );
                             } else if (option.name === 'Newest') {
                               setSortOptions([
