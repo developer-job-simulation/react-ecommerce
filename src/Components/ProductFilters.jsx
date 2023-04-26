@@ -262,7 +262,7 @@ export default function ProductFilters({
                               ]);
                               setProducts(
                                 products.sort(
-                                  (a, b) => b.releaseDate - a.releaseDate
+                                  (a, b) => a.releaseDate - b.releaseDate
                                 )
                               );
                             }
