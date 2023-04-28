@@ -22,8 +22,8 @@ export default function ProductFilters({
   setSelectedByColor,
 }) {
   const ref = useRef([]);
-  const [nbr_filters_price, set_Nbr_Filters_price] = useState(0);
-  const [nbr_filters_color, set_Nbr_Filters_color] = useState(0);
+  const [priceFilterCount, setPriceFilterCount] = useState(0);
+  const [colorFilterCount, setColorFilterCount] = useState(0);
   const uncheckRadio = () => {
     for (let i = 0; i < filterOptions.price.length; i++) {
       ref.current[`price-${i}`].checked = false;
@@ -31,6 +31,85 @@ export default function ProductFilters({
     for (let i = 0; i < filterOptions.color.length; i++) {
       ref.current[`color-${i}`].checked = false;
     }
+  };
+  const updateFilterOptions = (e) => {
+    filterOptions.price.forEach((element) => {
+      if (element.minValue.toString() === e.target.value) {
+        if (element.checked === false) {
+          element.checked = true;
+        } else if (element.checked === true) element.checked = false;
+      }
+    });
+  };
+  const updateColorFilters = (e) => {
+    filterOptions.color.forEach((element) => {
+      if (element.value === e.target.value) {
+        if (element.checked === false) {
+          element.checked = true;
+        } else if (element.checked === true) {
+          element.checked = false;
+        }
+      }
+    });
+  };
+  const updateProductsSelectedByPrice = () => {
+    let selected_array = [];
+    let selected_products = filterOptions.price.filter(function (x) {
+      return x.checked === true;
+    });
+    selected_products.forEach((element) => {
+      selected_array.push(
+        allProducts.filter(function (item) {
+          return item.price > element.minValue && item.price < element.maxValue;
+        })
+      );
+    });
+    setPriceFilterCount(selected_array.length);
+    if (selected_array.length > 0) {
+      setSelectedByPrice(selected_array.flat(1));
+      setProducts(selected_array.flat(1));
+    } else {
+      if (selectedByColor.length > 0) {
+        setProducts(selectedByColor);
+      } else {
+        setProducts(allProducts);
+        setSelectedByPrice(allProducts);
+      }
+    }
+  };
+
+  const updateProductsSelectedByColor = () => {
+    let selected_products_color = filterOptions.color.filter(function (x) {
+      return x.checked === true;
+    });
+    let selected_array_color = [];
+
+    if (selected_products_color.length > 0) {
+      selected_products_color.forEach((element) => {
+        if (allProducts !== products) {
+          selected_array_color.push(
+            products.filter(function (item) {
+              return item.color === element.value;
+            })
+          );
+          setProducts(selected_array_color.flat(1));
+        } else {
+          selected_array_color.push(
+            allProducts.filter(function (item) {
+              return item.color === element.value;
+            })
+          );
+          setProducts(selected_array_color.flat(1));
+        }
+      });
+    } else {
+      if (selectedByPrice.length > 0) {
+        setProducts(selectedByPrice);
+      } else {
+        setProducts(allProducts);
+      }
+    }
+    setColorFilterCount(selected_array_color.length);
   };
 
   return (
@@ -50,7 +129,7 @@ export default function ProductFilters({
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              {nbr_filters_price + nbr_filters_color} Filters
+              {priceFilterCount + colorFilterCount} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
@@ -59,8 +138,8 @@ export default function ProductFilters({
               className="text-gray-500"
               onClick={() => {
                 setProducts(allProducts);
-                set_Nbr_Filters_price(0);
-                set_Nbr_Filters_color(0);
+                setPriceFilterCount(0);
+                setColorFilterCount(0);
 
                 setFilterOptions(getDefaultFilterOptions());
                 uncheckRadio();
@@ -93,45 +172,8 @@ export default function ProductFilters({
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
                       onClick={(e) => {
-                        filterOptions.price.forEach((element) => {
-                          if (element.minValue.toString() === e.target.value) {
-                            if (element.checked === false) {
-                              element.checked = true;
-                            } else if (element.checked === true)
-                              element.checked = false;
-                          }
-                        });
-                        let selected_array = [];
-
-                        let selected_products = filterOptions.price.filter(
-                          function (x) {
-                            return x.checked === true;
-                          }
-                        );
-
-                        selected_products.forEach((element) => {
-                          selected_array.push(
-                            allProducts.filter(function (item) {
-                              return (
-                                item.price > element.minValue &&
-                                item.price < element.maxValue
-                              );
-                            })
-                          );
-                        });
-                        if (selected_array.length > 0) {
-                          setProducts(selected_array.flat(1));
-                          setSelectedByPrice(selected_array.flat(1));
-                        } else {
-                          if (selectedByColor.length > 0) {
-                            setProducts(selectedByColor);
-                          } else {
-                            setProducts(allProducts);
-                            setSelectedByPrice(allProducts);
-                          }
-                        }
-
-                        set_Nbr_Filters_price(selected_array.length);
+                        updateFilterOptions(e);
+                        updateProductsSelectedByPrice();
                       }}
                     />
                     <label
@@ -163,50 +205,8 @@ export default function ProductFilters({
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
                       onClick={(e) => {
-                        filterOptions.color.forEach((element) => {
-                          if (element.value === e.target.value) {
-                            if (element.checked === false) {
-                              element.checked = true;
-                            } else if (element.checked === true)
-                              element.checked = false;
-                          }
-                        });
-
-                        let selected_products_color =
-                          filterOptions.color.filter(function (x) {
-                            return x.checked === true;
-                          });
-
-                        let selected_array_color = [];
-                        if (selected_products_color.length > 0) {
-                          selected_products_color.forEach((element) => {
-                            if (allProducts !== products) {
-                              selected_array_color.push(
-                                products.filter(function (item) {
-                                  return item.color === element.value;
-                                })
-                              );
-
-                              setProducts(selected_array_color.flat(1));
-                            } else {
-                              selected_array_color.push(
-                                allProducts.filter(function (item) {
-                                  return item.color === element.value;
-                                })
-                              );
-                              setProducts(selected_array_color.flat(1));
-                              setSelectedByColor(selected_array_color.flat(1));
-                            }
-                          });
-                        } else {
-                          if (selectedByPrice.length > 0) {
-                            setProducts(selectedByPrice);
-                          } else {
-                            setProducts(allProducts);
-                          }
-                        }
-
-                        set_Nbr_Filters_color(selected_array_color.length);
+                        updateColorFilters(e);
+                        updateProductsSelectedByColor();
                       }}
                     />
                     <label
