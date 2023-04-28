@@ -1,7 +1,7 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid';
-import React, { Fragment, useEffect } from 'react';
-import { useState } from 'react';
+import React, { Fragment } from 'react';
+import { useState, useRef } from 'react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -14,23 +14,22 @@ export default function ProductFilters({
   setSortOptions,
   products,
   setProducts,
-  allproducts,
+  allProducts,
   getDefaultFilterOptions,
   selectedByPrice,
-  setselectedByPrice,
+  setSelectedByPrice,
   selectedByColor,
-  setselectedByColor,
+  setSelectedByColor,
 }) {
+  const ref = useRef([]);
   const [nbr_filters_price, set_Nbr_Filters_price] = useState(0);
   const [nbr_filters_color, set_Nbr_Filters_color] = useState(0);
   const uncheckRadio = () => {
     for (let i = 0; i < filterOptions.price.length; i++) {
-      let price_radio = document.getElementById(`price-${i}`);
-      price_radio.checked = false;
+      ref.current[`price-${i}`].checked = false;
     }
     for (let i = 0; i < filterOptions.color.length; i++) {
-      let color_radio = document.getElementById(`color-${i}`);
-      color_radio.checked = false;
+      ref.current[`color-${i}`].checked = false;
     }
   };
 
@@ -59,7 +58,7 @@ export default function ProductFilters({
               type="button"
               className="text-gray-500"
               onClick={() => {
-                setProducts(allproducts);
+                setProducts(allProducts);
                 set_Nbr_Filters_price(0);
                 set_Nbr_Filters_color(0);
 
@@ -86,6 +85,9 @@ export default function ProductFilters({
                     <input
                       id={`price-${optionIdx}`}
                       name="price[]"
+                      ref={(element) => {
+                        ref.current[`price-${optionIdx}`] = element;
+                      }}
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
@@ -109,7 +111,7 @@ export default function ProductFilters({
 
                         selected_products.forEach((element) => {
                           selected_array.push(
-                            allproducts.filter(function (item) {
+                            allProducts.filter(function (item) {
                               return (
                                 item.price > element.minValue &&
                                 item.price < element.maxValue
@@ -119,13 +121,13 @@ export default function ProductFilters({
                         });
                         if (selected_array.length > 0) {
                           setProducts(selected_array.flat(1));
-                          setselectedByPrice(selected_array.flat(1));
+                          setSelectedByPrice(selected_array.flat(1));
                         } else {
                           if (selectedByColor.length > 0) {
                             setProducts(selectedByColor);
                           } else {
-                            setProducts(allproducts);
-                            setselectedByPrice(allproducts);
+                            setProducts(allProducts);
+                            setSelectedByPrice(allProducts);
                           }
                         }
 
@@ -153,6 +155,9 @@ export default function ProductFilters({
                     <input
                       id={`color-${optionIdx}`}
                       name="color[]"
+                      ref={(element) => {
+                        ref.current[`color-${optionIdx}`] = element;
+                      }}
                       defaultValue={option.value}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
@@ -175,7 +180,7 @@ export default function ProductFilters({
                         let selected_array_color = [];
                         if (selected_products_color.length > 0) {
                           selected_products_color.forEach((element) => {
-                            if (allproducts !== products) {
+                            if (allProducts !== products) {
                               selected_array_color.push(
                                 products.filter(function (item) {
                                   return item.color === element.value;
@@ -185,20 +190,19 @@ export default function ProductFilters({
                               setProducts(selected_array_color.flat(1));
                             } else {
                               selected_array_color.push(
-                                allproducts.filter(function (item) {
+                                allProducts.filter(function (item) {
                                   return item.color === element.value;
                                 })
                               );
                               setProducts(selected_array_color.flat(1));
-                              setselectedByColor(selected_array_color.flat(1));
+                              setSelectedByColor(selected_array_color.flat(1));
                             }
                           });
                         } else {
                           if (selectedByPrice.length > 0) {
                             setProducts(selectedByPrice);
                           } else {
-                            setProducts(allproducts);
-                            // setselectedByColor(allproducts);
+                            setProducts(allProducts);
                           }
                         }
 

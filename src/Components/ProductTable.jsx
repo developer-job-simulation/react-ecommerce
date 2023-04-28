@@ -34,11 +34,11 @@ const getDefaultSortOptions = () => {
 
 export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
-  let [allproducts, setallProducts] = useState([]);
+  let [allProducts, setAllProducts] = useState([]);
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
-  const [selectedByPrice, setselectedByPrice] = useState([]);
-  const [selectedByColor, setselectedByColor] = useState([]);
+  const [selectedByPrice, setSelectedByPrice] = useState([]);
+  const [selectedByColor, setSelectedByColor] = useState([]);
 
   useEffect(() => {
     let fetchProducts = async () => {
@@ -46,7 +46,7 @@ export default function ProductTable({ cart, updateCart }) {
       let res = await fetch('http://localhost:3001/products');
       let body = await res.json();
       setProducts(body);
-      setallProducts(body);
+      setAllProducts(body);
     };
     fetchProducts();
   }, []);
@@ -63,12 +63,12 @@ export default function ProductTable({ cart, updateCart }) {
             setSortOptions,
             products,
             setProducts,
-            allproducts,
+            allProducts,
             getDefaultFilterOptions,
             selectedByPrice,
-            setselectedByPrice,
+            setSelectedByPrice,
             selectedByColor,
-            setselectedByColor,
+            setSelectedByColor,
           }}
         />
 

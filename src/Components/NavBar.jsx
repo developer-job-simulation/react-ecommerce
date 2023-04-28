@@ -1,11 +1,10 @@
 import { ShoppingBagIcon } from '@heroicons/react/outline';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function NavBar({ setOpen, cart }) {
   let qtyCart = 0;
   const updateQtyCart = () => {
     cart.forEach((element) => {
-      // setCartSubTotal(cartsubtotal + element.price);
       qtyCart += element.quantity;
     });
 

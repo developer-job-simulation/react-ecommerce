@@ -5,16 +5,15 @@ import ProductTable from '../Components/ProductTable';
 
 function Home() {
   const [open, setOpen] = useState(false);
-  const [cart, updateCart] = useState(JSON.parse(window.localStorage.getItem('local_storage_cart')) ||[]);
-  const [cartsubtotal, setCartSubTotal] = useState([]);
-
-
+  const [cart, updateCart] = useState(
+    JSON.parse(window.localStorage.getItem('local_storage_cart')) || []
+  );
 
   return (
     <main>
       <NavBar {...{ setOpen, cart }} />
       <Cart {...{ open, setOpen, cart, updateCart }} />
-      <ProductTable {...{ cart, updateCart,cartsubtotal}} />
+      <ProductTable {...{ cart, updateCart }} />
     </main>
   );
 }

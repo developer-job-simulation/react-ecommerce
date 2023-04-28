@@ -1,18 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
   const displaySubtotal = () => {
-    let subtotal = 0;
-    cart.forEach((element) => {
-      // setCartSubTotal(cartsubtotal + element.price);
-      let oneprice = element.quantity * element.price;
-      subtotal += oneprice;
-    });
-
-    return subtotal;
+    return cart.reduce((subtotal, element) => {
+      return subtotal + element.quantity * element.price;
+    }, 0);
   };
 
   return (
