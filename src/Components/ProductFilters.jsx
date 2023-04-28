@@ -1,12 +1,117 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
-import React, { Fragment } from "react";
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid';
+import React, { Fragment } from 'react';
+import { useState, useRef } from 'react';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({
+  filterOptions,
+  setFilterOptions,
+  sortOptions,
+  setSortOptions,
+  products,
+  setProducts,
+  allProducts,
+  getDefaultFilterOptions,
+  selectedByPrice,
+  setSelectedByPrice,
+  selectedByColor,
+  setSelectedByColor,
+}) {
+  const ref = useRef([]);
+  const [priceFilterCount, setPriceFilterCount] = useState(0);
+  const [colorFilterCount, setColorFilterCount] = useState(0);
+  const uncheckRadio = () => {
+    for (let i = 0; i < filterOptions.price.length; i++) {
+      ref.current[`price-${i}`].checked = false;
+    }
+    for (let i = 0; i < filterOptions.color.length; i++) {
+      ref.current[`color-${i}`].checked = false;
+    }
+  };
+  const updateFilterOptions = (e) => {
+    filterOptions.price.forEach((element) => {
+      if (element.minValue.toString() === e.target.value) {
+        if (element.checked === false) {
+          element.checked = true;
+        } else if (element.checked === true) element.checked = false;
+      }
+    });
+  };
+  const updateColorFilters = (e) => {
+    filterOptions.color.forEach((element) => {
+      if (element.value === e.target.value) {
+        if (element.checked === false) {
+          element.checked = true;
+        } else if (element.checked === true) {
+          element.checked = false;
+        }
+      }
+    });
+  };
+  const updateProductsSelectedByPrice = () => {
+    let selected_array = [];
+    let selected_products = filterOptions.price.filter(function (x) {
+      return x.checked === true;
+    });
+    selected_products.forEach((element) => {
+      selected_array.push(
+        allProducts.filter(function (item) {
+          return item.price > element.minValue && item.price < element.maxValue;
+        })
+      );
+    });
+    setPriceFilterCount(selected_array.length);
+    if (selected_array.length > 0) {
+      setSelectedByPrice(selected_array.flat(1));
+      setProducts(selected_array.flat(1));
+    } else {
+      if (selectedByColor.length > 0) {
+        setProducts(selectedByColor);
+      } else {
+        setProducts(allProducts);
+        setSelectedByPrice(allProducts);
+      }
+    }
+  };
+
+  const updateProductsSelectedByColor = () => {
+    let selected_products_color = filterOptions.color.filter(function (x) {
+      return x.checked === true;
+    });
+    let selected_array_color = [];
+
+    if (selected_products_color.length > 0) {
+      selected_products_color.forEach((element) => {
+        if (allProducts !== products) {
+          selected_array_color.push(
+            products.filter(function (item) {
+              return item.color === element.value;
+            })
+          );
+          setProducts(selected_array_color.flat(1));
+        } else {
+          selected_array_color.push(
+            allProducts.filter(function (item) {
+              return item.color === element.value;
+            })
+          );
+          setProducts(selected_array_color.flat(1));
+        }
+      });
+    } else {
+      if (selectedByPrice.length > 0) {
+        setProducts(selectedByPrice);
+      } else {
+        setProducts(allProducts);
+      }
+    }
+    setColorFilterCount(selected_array_color.length);
+  };
+
   return (
     <Disclosure
       as="section"
@@ -24,11 +129,22 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {priceFilterCount + colorFilterCount} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button
+              type="button"
+              className="text-gray-500"
+              onClick={() => {
+                setProducts(allProducts);
+                setPriceFilterCount(0);
+                setColorFilterCount(0);
+
+                setFilterOptions(getDefaultFilterOptions());
+                uncheckRadio();
+              }}
+            >
               Clear all
             </button>
           </div>
@@ -41,16 +157,29 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Price</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.price.map((option, optionIdx) => (
-                  <div key={option.minValue} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.minValue}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`price-${optionIdx}`}
                       name="price[]"
+                      ref={(element) => {
+                        ref.current[`price-${optionIdx}`] = element;
+                      }}
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onClick={(e) => {
+                        updateFilterOptions(e);
+                        updateProductsSelectedByPrice();
+                      }}
                     />
-                    <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`price-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -61,16 +190,29 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Color</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.color.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.value}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`color-${optionIdx}`}
                       name="color[]"
+                      ref={(element) => {
+                        ref.current[`color-${optionIdx}`] = element;
+                      }}
                       defaultValue={option.value}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onClick={(e) => {
+                        updateColorFilters(e);
+                        updateProductsSelectedByColor();
+                      }}
                     />
-                    <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`color-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -109,12 +251,32 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            if (option.name === 'Price') {
+                              setSortOptions([
+                                { name: 'Price', current: true },
+                                { name: 'Newest', current: false },
+                              ]);
+                              setProducts(
+                                products.sort((a, b) => a.price - b.price)
+                              );
+                            } else if (option.name === 'Newest') {
+                              setSortOptions([
+                                { name: 'Price', current: false },
+                                { name: 'Newest', current: true },
+                              ]);
+                              setProducts(
+                                products.sort(
+                                  (a, b) => a.releaseDate - b.releaseDate
+                                )
+                              );
+                            }
                           }}
                           className={classNames(
-                            option.current ? "font-medium text-gray-900" : "text-gray-500",
-                            active ? "bg-gray-100" : "",
-                            "block px-4 py-2 text-sm"
+                            option.current
+                              ? 'font-medium text-gray-900'
+                              : 'text-gray-500',
+                            active ? 'bg-gray-100' : '',
+                            'block px-4 py-2 text-sm'
                           )}
                         >
                           {option.name}
