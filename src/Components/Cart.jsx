@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { XIcon } from "@heroicons/react/outline";
+import { ShoppingCartIcon, XIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
@@ -9,7 +9,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
         as="div"
         className="fixed inset-0 overflow-hidden z-10"
         onClose={() => {
-          setOpen;
+          setOpen(false);
         }}
       >
         <div className="absolute inset-0 overflow-hidden">
@@ -55,7 +55,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                     <div className="mt-8">
                       <div className="flow-root">
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {cart.map((product) => (
+                          {cart.length === 0 ? (<div className="flex flex-col items-center content-center flex-auto"><ShoppingCartIcon className="w-12" /><span className="py-2">Your Cart is Empty.</span></div>) : cart.map((product) => (
                             <li key={product.id} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
@@ -86,6 +86,8 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                                           return p.quantity > 0;
                                         });
                                         updateCart(newCart);
+                                        const localCart = newCart.map(p => JSON.stringify(p))
+                                        localStorage.setItem('cart', JSON.stringify(localCart))
                                       }}
                                       type="button"
                                       className="font-medium text-gray-500 hover:text-black"
@@ -105,7 +107,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>${cart.map(product => product.price).reduce((a, c) => a + c, 0)}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
