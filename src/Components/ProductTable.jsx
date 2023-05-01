@@ -28,7 +28,7 @@ const getDefaultSortOptions = () => {
 };
 
 export default function ProductTable({ cart, updateCart }) {
-  let [products, setProducts] = useState([]);
+  var [products, setProducts] = useState([]);
 
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
@@ -39,15 +39,34 @@ export default function ProductTable({ cart, updateCart }) {
       let res = await fetch("http://localhost:3001/products");
       let body = await res.json();
       setProducts(body);
+
+      for(let i = 0; i < sortOptions.length; i++){
+
+        if(sortOptions[i].name == "Price" && sortOptions[i].current == true){
+         (setProducts(products.sort((a, b) => a.price < b.price ? 1 : -1))) 
+         break;
+        }
+        else if(sortOptions[i].name == "Newest" && sortOptions[i].current == true){
+          (setProducts(products.sort((a, b) => a.releaseDate < b.releaseDate ? 1 : -1))) 
+          break;
+         }
+        }
+     
+
+     
     };
     fetchProducts();
-  });
 
+     
+    
+  }, [sortOptions]);
+
+  
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
+        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions, setProducts, products }} />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
