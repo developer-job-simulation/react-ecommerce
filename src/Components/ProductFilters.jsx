@@ -6,7 +6,21 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts }) {
+
+  // define a new sort function 
+  const customSort=( criteria )=>{
+
+    const productsCopy = [...products]
+
+    if( criteria == "Price")
+      productsCopy.sort(function(a, b){return a.price - b.price});
+    else if ( criteria == "Newest" )
+      productsCopy.sort(function(a, b){return Number(a.releaseDate) - Number(b.releaseDate) });
+      
+    return productsCopy;
+  };
+
   return (
     <Disclosure
       as="section"
@@ -110,6 +124,24 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                         <button
                           onClick={() => {
                             // TODO
+
+                            // 1 bold the current sort option
+                            const new_sortOptions = [];
+                            sortOptions.forEach(element => {
+                              if (element.name == option.name)
+                                {
+                                  new_sortOptions.push({name: element.name, current:true});
+                                  
+                                }
+                              else
+                                new_sortOptions.push({name: element.name, current: false });
+                            });
+                            setSortOptions(new_sortOptions);
+
+                            // 2 sort accordingly
+                            setProducts(customSort(option.name));
+
+
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
