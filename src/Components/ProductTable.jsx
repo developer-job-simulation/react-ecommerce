@@ -33,6 +33,8 @@ export default function ProductTable({ cart, updateCart }) {
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
 
+  
+
   useEffect(() => {
     let fetchProducts = async () => {
       console.info("Fetching Products...");
@@ -74,6 +76,12 @@ export default function ProductTable({ cart, updateCart }) {
                         }
                       });
                     }
+
+
+                    localStorage.setItem("cart", JSON.stringify(newCart));
+                    console.log("Check ------- local cart");
+                    const new_cart = JSON.parse(localStorage.getItem("cart"));
+                    console.log(new_cart);
 
                     updateCart(newCart);
                   }}
