@@ -5,7 +5,6 @@ import ProductTable from "../Components/ProductTable";
 
 function Home() {
 
-
   let local_cart = JSON.parse(localStorage.getItem("cart"));
   if (local_cart == undefined )
     local_cart  = [];
