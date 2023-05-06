@@ -114,13 +114,6 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
       else 
        clearFilter();
       
-
-      console.log("default_products");
-      console.log(default_products);
-      console.log("products");
-      console.log(products);
-      console.log("filterOptions");
-      console.log(filterOptions);
     }, [filter_num]
   )
 

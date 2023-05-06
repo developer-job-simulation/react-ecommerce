@@ -1,9 +1,26 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
 
+  const [subtotal, set_subtotal ] = useState(0);
+
+  const calculate_subtotal=()=>{
+    let sum = 0;
+    for(let i=0; i<cart.length;i++) {
+      sum += cart[i].price;
+    }
+    set_subtotal(sum);
+  }
+
+  useEffect(
+    ()=>{
+      calculate_subtotal();
+    }, [cart]
+  );
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -11,7 +28,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
         as="div"
         className="fixed inset-0 overflow-hidden z-10"
         onClose={() => {
-          setOpen;
+          setOpen(false);
         }}
       >
         <div className="absolute inset-0 overflow-hidden">
@@ -126,7 +143,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>${subtotal}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
