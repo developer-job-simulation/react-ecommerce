@@ -30,7 +30,6 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
   const customFilter = ()=>{
     const productsCopy = [...default_products];
 
-
     // filter price first
     let price_i=0
 
@@ -89,20 +88,39 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
         }
       }
     }
-
     setProducts(productsCopy);
   }
 
   const clearFilter=()=>{
-    setProducts(default_products)
+
+    
+
+    const all_checkboxes = document.querySelectorAll(`input[type="checkbox"]`);
+    all_checkboxes.forEach(
+      element=>{
+        element.checked=false;
+      }
+    );
+    
+    setProducts(default_products );
+
   }
 
   useEffect(
     ()=>{
+
       if(filter_num != 0)
-        customFilter();
+       customFilter();
       else 
-        clearFilter();
+       clearFilter();
+      
+
+      console.log("default_products");
+      console.log(default_products);
+      console.log("products");
+      console.log(products);
+      console.log("filterOptions");
+      console.log(filterOptions);
     }, [filter_num]
   )
 
@@ -130,13 +148,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
             <button type="button" className="text-gray-500"
               onClick={ ()=>{
                 set_filter_num(0);
-                const all_checkboxes = document.querySelectorAll(`input[type="checkbox"]`);
-                all_checkboxes.forEach(
-                  element=>{
-                    element.checked=false;
-                  }
-                );
-                
+
                 const new_price_filterOptions = [];
                 filterOptions["price"].forEach(element => {
                     
@@ -156,8 +168,8 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                     checked: false });
                     
                 });
-                setFilterOptions({price:filterOptions["price"], color:filterOptions["color"]});
-
+                setFilterOptions({price:new_price_filterOptions, color:new_color_filterOptions});
+                
               } }
             >
               Clear all
@@ -174,13 +186,14 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 {filterOptions.price.map((option, optionIdx) => (
                   <div key={option.minValue} className="flex items-center text-base sm:text-sm">
                     <input
-                      
-                      onChange={(e) => {
+                      onChange={ (e)=>{
                         if(e.currentTarget.checked)
                           set_filter_num(filter_num+1);
                         else
                           set_filter_num(filter_num-1);
 
+                        
+                        
                         // 1 bold the current filter option
                         const new_price_filterOptions = [];
                         filterOptions["price"].forEach(element => {
@@ -196,8 +209,9 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                             new_price_filterOptions.push(element);
                         });
                         setFilterOptions({price:new_price_filterOptions, color:filterOptions["color"]});
-
-                      }}
+                        }
+                      }
+                        
 
                       id={`price-${optionIdx}`}
                       name="price[]"
@@ -305,7 +319,6 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
 
                             // 2 sort accordingly
                             setProducts(customSort(option.name));
-
 
                           }}
                           className={classNames(

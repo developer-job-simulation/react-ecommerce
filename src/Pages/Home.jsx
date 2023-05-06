@@ -14,7 +14,7 @@ function Home() {
 
   return (
     <main>
-      <NavBar {...{ setOpen }} />
+      <NavBar {...{ setOpen, cart }} />
       <Cart {...{ open, setOpen, cart, updateCart }} />
       <ProductTable {...{ cart, updateCart }} />
     </main>
