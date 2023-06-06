@@ -1,8 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { XIcon } from "@heroicons/react/outline";
-import React, { Fragment } from "react";
+import { XIcon, ShoppingCartIcon } from "@heroicons/react/outline";
+import React, { Fragment, useState } from "react";
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
+  
+    const total = cart.reduce((acc, current) => {
+      return acc + current.price
+    },0)
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -11,7 +15,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
         onClose={() => {
           setOpen;
         }}
-      >
+        >
         <div className="absolute inset-0 overflow-hidden">
           <Transition.Child
             as={Fragment}
@@ -22,7 +26,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"  onClick={() => setOpen(false)}/>
           </Transition.Child>
 
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
@@ -52,9 +56,10 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                       </div>
                     </div>
 
+                    {cart.length === 0 && <div className="flex h-full flex-col items-center justify-center"><ShoppingCartIcon className="h-16 w-16"/><span className="pt-2">Your Cart is Empty.</span></div>}
                     <div className="mt-8">
                       <div className="flow-root">
-                        <ul role="list" className="-my-6 divide-y divide-gray-200">
+                        <ul role="list" className="-my-6 divide-y divide-gray-200">                          
                           {cart.map((product) => (
                             <li key={product.id} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -105,7 +110,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>${total}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
