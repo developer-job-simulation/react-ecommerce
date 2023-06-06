@@ -1,16 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import React, { Fragment, useState } from "react";
-import { useEffect } from "react";
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
-  const [total, setTotal] = useState(0);
-  useEffect(() => {
-    const totalAmount = cart.reduce((acc, current) => {
+  
+    const total = cart.reduce((acc, current) => {
       return acc + current.price
     },0)
-    setTotal(totalAmount);
-  },[cart])
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
