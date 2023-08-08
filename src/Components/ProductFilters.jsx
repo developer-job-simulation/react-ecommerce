@@ -1,19 +1,27 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
-import React, { Fragment } from "react";
+import { Disclosure, Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid'
+import React, { Fragment } from 'react'
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({
+  filterOptions,
+  setFilterOptions,
+  sortOptions,
+  setSortOptions,
+}) {
   return (
     <Disclosure
       as="section"
       aria-labelledby="filter-heading"
       className="relative z-10  border-gray-200 grid items-center"
     >
-      <h2 id="filter-heading" className="sr-only">
+      <h2
+        id="filter-heading"
+        className="sr-only"
+      >
         Filters
       </h2>
       <div className="relative col-start-1 row-start-1 py-4">
@@ -28,7 +36,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button
+              type="button"
+              className="text-gray-500"
+            >
               Clear all
             </button>
           </div>
@@ -41,7 +52,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Price</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.price.map((option, optionIdx) => (
-                  <div key={option.minValue} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.minValue}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`price-${optionIdx}`}
                       name="price[]"
@@ -50,7 +64,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
                     />
-                    <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`price-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -61,7 +78,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Color</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.color.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.value}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`color-${optionIdx}`}
                       name="color[]"
@@ -70,7 +90,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
                     />
-                    <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`color-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -82,7 +105,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
       </Disclosure.Panel>
       <div className="col-start-1 row-start-1 py-4">
         <div className="flex justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Menu as="div" className="relative inline-block">
+          <Menu
+            as="div"
+            className="relative inline-block"
+          >
             <div className="flex">
               <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                 Sort
@@ -110,11 +136,21 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                         <button
                           onClick={() => {
                             // TODO
+                            const newOption = {
+                              ...option,
+                              current: !option.current,
+                            }
+                            if (option.name === 'Price')
+                              setSortOptions([newOption, sortOptions[1]])
+                            else if (option.name === 'Newest')
+                              setSortOptions([sortOptions[0], newOption])
                           }}
                           className={classNames(
-                            option.current ? "font-medium text-gray-900" : "text-gray-500",
-                            active ? "bg-gray-100" : "",
-                            "block px-4 py-2 text-sm"
+                            option.current
+                              ? 'font-medium text-gray-900'
+                              : 'text-gray-500',
+                            active ? 'bg-gray-100' : '',
+                            'block px-4 py-2 text-sm'
                           )}
                         >
                           {option.name}
@@ -129,5 +165,5 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
         </div>
       </div>
     </Disclosure>
-  );
+  )
 }
