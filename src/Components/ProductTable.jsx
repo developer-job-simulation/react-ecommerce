@@ -43,29 +43,70 @@ export default function ProductTable({ cart, updateCart }) {
       console.info('Fetching Products...')
       let res = await fetch('http://localhost:3001/products')
       let body = await res.json()
-      let sortedProducts = []
-      if (sortOptions[0].current) {
-        sortedProducts = body.sort((a, b) => a.price - b.price)
-      } else if (sortOptions[1].current) {
-        sortedProducts = body.sort((a, b) => a.releaseDate - b.releaseDate)
-      } else {
-        sortedProducts = body
-      }
-      setProducts(sortedProducts)
+
+      setProducts(body)
     }
     fetchProducts()
-  }, [sortOptions])
+  }, [])
+
+  // Filter products
+  const filterProducts = () => {
+    let filteredProducts = products
+    const colorFilter = filterOptions.color
+      .filter((c) => c.checked)
+      .map((c) => c.value)
+    const priceFilter = filterOptions.price
+      .filter((p) => p.checked)
+      .map((p) => {
+        return { minF: p.minValue, maxF: p.maxValue }
+      })
+
+    if (colorFilter.length > 0)
+      filteredProducts = filteredProducts.filter((p) =>
+        colorFilter.includes(p.color)
+      )
+    if (priceFilter.length > 0) {
+      filteredProducts = filteredProducts.filter((p) =>
+        priceFilter.some(({ minF, maxF }) => p.price >= minF && p.price <= maxF)
+      )
+    }
+    return filteredProducts
+  }
+
+  // Sort products
+  const sortProducts = (p) => {
+    if (sortOptions[0].current) {
+      return p.sort((a, b) => a.price - b.price)
+    } else if (sortOptions[1].current) {
+      return p.sort((a, b) => a.releaseDate - b.releaseDate)
+    } else {
+      return p
+    }
+  }
+
+  function handleClear(event) {
+    setFilterOptions(getDefaultFilterOptions())
+  }
+
+  const filteredProducts = filterProducts()
+  const productsToShow = sortProducts(filteredProducts)
 
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
         <ProductFilters
-          {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }}
+          {...{
+            filterOptions,
+            setFilterOptions,
+            sortOptions,
+            setSortOptions,
+            handleClear,
+          }}
         />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
+          {productsToShow.map((product) => (
             <a
               key={product.id}
               className="group"

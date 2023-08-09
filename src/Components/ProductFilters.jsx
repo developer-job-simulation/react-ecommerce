@@ -1,6 +1,6 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid'
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -11,7 +11,32 @@ export default function ProductFilters({
   setFilterOptions,
   sortOptions,
   setSortOptions,
+  handleClear,
 }) {
+  function handleFilterChange(event) {
+    const filter = event.target.value
+
+    if (event.target.name.startsWith('color')) {
+      // Color filter changed
+      const newColorArray = filterOptions.color.map((c) =>
+        c.value === filter ? { ...c, checked: !c.checked } : c
+      )
+      setFilterOptions({ ...filterOptions, color: newColorArray })
+    } else {
+      // Price filter changed
+      const newPriceArray = filterOptions.price.map((p) =>
+        p.minValue === Number(filter) ? { ...p, checked: !p.checked } : p
+      )
+      setFilterOptions({ ...filterOptions, price: newPriceArray })
+    }
+  }
+  function countFilter() {
+    return (
+      filterOptions.price.reduce((s, p) => Number(p.checked) + s, 0) +
+      filterOptions.color.reduce((s, c) => Number(c.checked) + s, 0)
+    )
+  }
+
   return (
     <Disclosure
       as="section"
@@ -32,13 +57,14 @@ export default function ProductFilters({
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {countFilter()} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
             <button
               type="button"
               className="text-gray-500"
+              onClick={handleClear}
             >
               Clear all
             </button>
@@ -62,7 +88,8 @@ export default function ProductFilters({
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
+                      onChange={handleFilterChange}
                     />
                     <label
                       htmlFor={`price-${optionIdx}`}
@@ -88,8 +115,10 @@ export default function ProductFilters({
                       defaultValue={option.value}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
+                      onChange={handleFilterChange}
                     />
+
                     <label
                       htmlFor={`color-${optionIdx}`}
                       className="ml-3 min-w-0 flex-1 text-gray-600"
