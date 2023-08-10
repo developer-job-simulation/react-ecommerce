@@ -165,14 +165,21 @@ export default function ProductFilters({
                         <button
                           onClick={() => {
                             // TODO
-                            const newOption = {
-                              ...option,
-                              current: !option.current,
+                            const clikedOption = sortOptions.find(
+                              (o) => o.name === option.name
+                            )
+                            const otherOption = sortOptions.find(
+                              (o) => o.name !== option.name
+                            )
+                            if (!clikedOption.current) {
+                              clikedOption.current = true
+                              if (otherOption.current) {
+                                otherOption.current = false
+                              }
+                            } else {
+                              clikedOption.current = false
                             }
-                            if (option.name === 'Price')
-                              setSortOptions([newOption, sortOptions[1]])
-                            else if (option.name === 'Newest')
-                              setSortOptions([sortOptions[0], newOption])
+                            setSortOptions([clikedOption, otherOption])
                           }}
                           className={classNames(
                             option.current

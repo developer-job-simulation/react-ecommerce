@@ -75,9 +75,12 @@ export default function ProductTable({ cart, updateCart }) {
 
   // Sort products
   const sortProducts = (p) => {
-    if (sortOptions[0].current) {
+    const price = sortOptions.find((o) => o.name === 'Price')
+    const newest = sortOptions.find((o) => o.name === 'Newest')
+
+    if (price.current) {
       return p.sort((a, b) => a.price - b.price)
-    } else if (sortOptions[1].current) {
+    } else if (newest.current) {
       return p.sort((a, b) => a.releaseDate - b.releaseDate)
     } else {
       return p
