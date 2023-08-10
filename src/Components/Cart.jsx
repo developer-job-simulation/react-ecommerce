@@ -3,6 +3,8 @@ import { XIcon, ShoppingCartIcon } from '@heroicons/react/outline'
 import React, { Fragment } from 'react'
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
+  const subTotal = cart.reduce((s, p) => p.price * p.quantity + s, 0)
+
   return (
     <Transition.Root
       show={open}
@@ -24,6 +26,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
             leave="ease-in-out duration-500"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            onClick={() => setOpen(false)}
           >
             <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
@@ -143,7 +146,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>${subTotal.toFixed(2)}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">
                       Shipping and taxes calculated at checkout.
