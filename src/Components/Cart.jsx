@@ -78,7 +78,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                               className="w-12"
                               aria-hidden="true"
                             />
-                            <span className="pt-2">Your Cart is empty</span>
+                            <span className="pt-2">Your Cart is Empty.</span>
                           </div>
                         ) : (
                           <ul
