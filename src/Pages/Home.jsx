@@ -19,9 +19,11 @@ function Home() {
     localStorage.setItem('cart', JSON.stringify(cart))
   }, [cart])
 
+  const productsInCart = cart.reduce((s, p) => p.quantity + s, 0)
+
   return (
     <main>
-      <NavBar {...{ setOpen }} />
+      <NavBar {...{ setOpen, productsInCart }} />
       <Cart {...{ open, setOpen, cart, updateCart }} />
       <ProductTable {...{ cart, updateCart }} />
     </main>
