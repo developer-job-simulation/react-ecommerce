@@ -76,15 +76,14 @@ export default function ProductTable({ cart, updateCart })
 
   useEffect(() =>
   {
-    let filter = false;
-    let filteredProducts = [];
+    let productsFilteredByPrice = [];
+    let productsFilteredByColor = [];
     for (let priceFilter of filterOptions["price"])
     {
       if (priceFilter.checked)
       {
-        filter = true;
         const res = allProducts.filter((p) => p.price > priceFilter.minValue && p.price < priceFilter.maxValue);
-        filteredProducts = [...filteredProducts, ...res];
+        productsFilteredByPrice = [...productsFilteredByPrice, ...res];
       }
     }
 
@@ -92,13 +91,30 @@ export default function ProductTable({ cart, updateCart })
     {
       if (colorFilter.checked)
       {
-        filter = true;
         const res = allProducts.filter((p) => p.color === colorFilter.value);
-        filteredProducts = [...filteredProducts, ...res];
+        productsFilteredByColor = [...productsFilteredByColor, ...res];
       }
     }
 
-    setProducts(filter ? filteredProducts : allProducts);
+    let filteredProducts = [...allProducts];
+    if (productsFilteredByPrice.length && productsFilteredByPrice.length)
+    {
+      filteredProducts = productsFilteredByPrice.reduce((prev, cur) =>
+      {
+        if (productsFilteredByColor.map(p => p.name).includes(cur.name))
+        {
+          prev.push(cur);
+        }
+        return prev;
+      }, []);
+    } else if (productsFilteredByPrice.length)
+    {
+      filteredProducts = productsFilteredByPrice;
+    } else if (productsFilteredByColor.length)
+    {
+      filteredProducts = productsFilteredByColor;
+    }
+    setProducts(filteredProducts);
   }, [filterOptions]);
 
   return (

@@ -123,7 +123,7 @@ export default function Cart({ open, setOpen, cart, updateCart })
                   <div className="px-4 py-6 border-t border-gray-200 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>{cart ? cart.reduce((prev, cur) => prev + cur.quantity * cur.price, 0) : "$0"}</p>
+                      <p>${cart.reduce((prev, cur) => prev + cur.quantity * cur.price, 0)}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
