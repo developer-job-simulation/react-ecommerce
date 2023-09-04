@@ -1,6 +1,7 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
 import React, { Fragment } from "react";
+import { getDefaultFilterOptions } from "./ProductTable";
 
 function classNames(...classes)
 {
@@ -26,11 +27,11 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none mr-2 w-5 h-5 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {filterOptions["price"].reduce((prev, cur) => cur.checked ? prev + 1 : prev, 0) + filterOptions["color"].reduce((prev, cur) => cur.checked ? prev + 1 : prev, 0)} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button type="button" className="text-gray-500" onClick={() => setFilterOptions(getDefaultFilterOptions())}>
               Clear all
             </button>
           </div>
@@ -50,7 +51,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 w-4 h-4 text-black rounded border-gray-300 focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
                       onChange={(e) =>
                       {
                         setFilterOptions(options =>
@@ -79,7 +80,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.value}
                       type="checkbox"
                       className="flex-shrink-0 w-4 h-4 text-black rounded border-gray-300 focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
                       onChange={(e) =>
                       {
                         setFilterOptions(options =>

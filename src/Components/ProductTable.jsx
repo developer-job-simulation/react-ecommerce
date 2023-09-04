@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductFilters from "./ProductFilters";
 
-const getDefaultFilterOptions = () =>
+export const getDefaultFilterOptions = () =>
 {
   return {
     price: [
@@ -47,7 +47,6 @@ export default function ProductTable({ cart, updateCart })
       let body = await res.json();
       setAllProducts(body);
       setProducts(body);
-      console.log(body);
     };
     fetchProducts();
   }, []);
@@ -97,8 +96,9 @@ export default function ProductTable({ cart, updateCart })
     }
 
     let filteredProducts = [...allProducts];
-    if (productsFilteredByPrice.length && productsFilteredByPrice.length)
+    if (productsFilteredByPrice.length && productsFilteredByColor.length)
     {
+
       filteredProducts = productsFilteredByPrice.reduce((prev, cur) =>
       {
         if (productsFilteredByColor.map(p => p.name).includes(cur.name))
