@@ -2,26 +2,28 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
 import React, { Fragment } from "react";
 
-function classNames(...classes) {
+function classNames(...classes)
+{
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions })
+{
   return (
     <Disclosure
       as="section"
       aria-labelledby="filter-heading"
-      className="relative z-10  border-gray-200 grid items-center"
+      className="grid relative z-10 items-center border-gray-200"
     >
       <h2 id="filter-heading" className="sr-only">
         Filters
       </h2>
       <div className="relative col-start-1 row-start-1 py-4">
-        <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-gray-200 text-sm px-4 sm:px-6 lg:px-8">
+        <div className="flex px-4 mx-auto space-x-6 max-w-7xl text-sm divide-x divide-gray-200 sm:px-6 lg:px-8">
           <div>
-            <Disclosure.Button className="group text-gray-700 font-medium flex items-center">
+            <Disclosure.Button className="flex items-center font-medium text-gray-700 group">
               <FilterIcon
-                className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
+                className="flex-none mr-2 w-5 h-5 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
               0 Filters
@@ -34,9 +36,9 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
           </div>
         </div>
       </div>
-      <Disclosure.Panel className="border-gray-200 py-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 gap-x-4 px-4 text-sm sm:px-6 md:gap-x-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
+      <Disclosure.Panel className="py-10 border-gray-200">
+        <div className="grid grid-cols-2 gap-x-4 px-4 mx-auto max-w-7xl text-sm sm:px-6 md:gap-x-6 lg:px-8">
+          <div className="grid grid-cols-1 auto-rows-min gap-y-10 md:grid-cols-2 md:gap-x-6">
             <fieldset>
               <legend className="block font-medium">Price</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
@@ -47,10 +49,19 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       name="price[]"
                       defaultValue={option.minValue}
                       type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
+                      className="flex-shrink-0 w-4 h-4 text-black rounded border-gray-300 focus:ring-black"
                       defaultChecked={option.checked}
+                      onChange={(e) =>
+                      {
+                        setFilterOptions(options =>
+                        {
+                          const updatedOptions = { ...options };
+                          updatedOptions["price"][optionIdx]["checked"] = e.target.checked;
+                          return updatedOptions;
+                        });
+                      }}
                     />
-                    <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label htmlFor={`price-${optionIdx}`} className="flex-1 ml-3 min-w-0 text-gray-600">
                       {option.label}
                     </label>
                   </div>
@@ -67,10 +78,19 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       name="color[]"
                       defaultValue={option.value}
                       type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
+                      className="flex-shrink-0 w-4 h-4 text-black rounded border-gray-300 focus:ring-black"
                       defaultChecked={option.checked}
+                      onChange={(e) =>
+                      {
+                        setFilterOptions(options =>
+                        {
+                          const updatedOptions = { ...options };
+                          updatedOptions["color"][optionIdx]["checked"] = e.target.checked;
+                          return updatedOptions;
+                        });
+                      }}
                     />
-                    <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label htmlFor={`color-${optionIdx}`} className="flex-1 ml-3 min-w-0 text-gray-600">
                       {option.label}
                     </label>
                   </div>
@@ -81,13 +101,13 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
         </div>
       </Disclosure.Panel>
       <div className="col-start-1 row-start-1 py-4">
-        <div className="flex justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Menu as="div" className="relative inline-block">
+        <div className="flex justify-end px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <Menu as="div" className="inline-block relative">
             <div className="flex">
-              <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+              <Menu.Button className="inline-flex justify-center text-sm font-medium text-gray-700 group hover:text-gray-900">
                 Sort
                 <ChevronDownIcon
-                  className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                  className="flex-shrink-0 -mr-1 ml-1 w-5 h-5 text-gray-400 group-hover:text-gray-500"
                   aria-hidden="true"
                 />
               </Menu.Button>
@@ -102,14 +122,17 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute right-0 mt-2 w-40 bg-white rounded-md ring-1 ring-black ring-opacity-5 shadow-2xl origin-top-right focus:outline-none">
                 <div className="py-1">
                   {sortOptions.map((option) => (
                     <Menu.Item key={option.name}>
                       {({ active }) => (
                         <button
-                          onClick={() => {
+                          onClick={() =>
+                          {
                             // TODO
+                            setSortOptions(options => options.map((opt) =>
+                              ({ ...opt, current: opt.name === option.name })));
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
@@ -128,6 +151,6 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
           </Menu>
         </div>
       </div>
-    </Disclosure>
+    </Disclosure >
   );
 }
