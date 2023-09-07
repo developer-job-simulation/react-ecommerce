@@ -7,7 +7,12 @@ const getDefaultFilterOptions = () => {
       { minValue: 0, maxValue: 25, label: "$0 - $25", checked: false },
       { minValue: 25, maxValue: 50, label: "$25 - $50", checked: false },
       { minValue: 50, maxValue: 75, label: "$50 - $75", checked: false },
-      { minValue: 75, maxValue: Number.MAX_VALUE, label: "$75+", checked: false },
+      {
+        minValue: 75,
+        maxValue: Number.MAX_VALUE,
+        label: "$75+",
+        checked: false,
+      },
     ],
     color: [
       { value: "beige", label: "Beige", checked: false },
@@ -29,6 +34,7 @@ const getDefaultSortOptions = () => {
 
 export default function ProductTable({ cart, updateCart }) {
   let [products, setProducts] = useState([]);
+  let [PRODUCTS, setPRODUCTS] = useState([]);
 
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
@@ -39,15 +45,78 @@ export default function ProductTable({ cart, updateCart }) {
       let res = await fetch("http://localhost:3001/products");
       let body = await res.json();
       setProducts(body);
+      setPRODUCTS(body);
     };
     fetchProducts();
-  });
+  }, []);
+
+  useEffect(() => {
+    let sortedProducts = [...products];
+
+    const sortingOptions = {
+      Price: (a, b) => a.price - b.price,
+      Newest: (a, b) =>
+        new Date(parseInt(a.releaseDate) * 1000) -
+        new Date(parseInt(b.releaseDate) * 1000),
+    };
+
+    const selectedOption = sortOptions.find((option) => option.current);
+
+    if (selectedOption && sortingOptions[selectedOption.name]) {
+      sortedProducts.sort(sortingOptions[selectedOption.name]);
+    }
+
+    setProducts(sortedProducts);
+  }, [sortOptions]);
+
+  useEffect(() => {
+    let filteredProducts = [...PRODUCTS];
+
+    // Filter by price
+    // find the checked options
+    const checkedPriceOptions = filterOptions.price.filter(
+      (option) => option.checked
+    );
+    // filter by those options
+    if (checkedPriceOptions.length > 0) {
+      filteredProducts = filteredProducts.filter((product) =>
+        checkedPriceOptions.some(
+          (priceOption) =>
+            product.price >= priceOption.minValue &&
+            product.price <= priceOption.maxValue
+        )
+      );
+    }
+
+    // Filter by color
+    // find the checked options
+    const checkedColorOptions = filterOptions.color.filter(
+      (option) => option.checked
+    );
+    // filter by those options
+    if (checkedColorOptions.length > 0) {
+      filteredProducts = filteredProducts.filter((product) =>
+        checkedColorOptions.some(
+          (colorOption) => product.color === colorOption.value
+        )
+      );
+    }
+
+    setProducts(filteredProducts);
+  }, [filterOptions]);
 
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
+        <ProductFilters
+          {...{
+            filterOptions,
+            setFilterOptions,
+            sortOptions,
+            setSortOptions,
+          }}
+        />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
@@ -64,15 +133,15 @@ export default function ProductTable({ cart, updateCart }) {
                   onClick={() => {
                     let newCart = cart.slice();
 
-                    if (!newCart.includes(product)) {
+                    const existingItem = newCart.find(
+                      (item) => item.id === product.id
+                    );
+
+                    if (existingItem) {
+                      existingItem.quantity += 1;
+                    } else {
                       product.quantity = 1;
                       newCart.push(product);
-                    } else {
-                      newCart.map((p) => {
-                        if (p.id === product.id) {
-                          p.quantity += 1;
-                        }
-                      });
                     }
 
                     updateCart(newCart);
@@ -82,7 +151,9 @@ export default function ProductTable({ cart, updateCart }) {
                 </button>
               </div>
               <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">${product.price}</p>
+              <p className="mt-1 text-lg font-medium text-gray-900">
+                ${product.price}
+              </p>
             </a>
           ))}
         </div>
