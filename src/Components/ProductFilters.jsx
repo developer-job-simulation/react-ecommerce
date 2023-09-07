@@ -6,7 +6,31 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({
+  filterOptions,
+  setFilterOptions,
+  sortOptions,
+  setSortOptions,
+  clearFilters,
+}) {
+  const clearFilters = () => {
+    const updatedPriceOptions = filterOptions.price.map((option) => ({
+      ...option,
+      checked: false,
+    }));
+
+    const updatedColorOptions = filterOptions.color.map((option) => ({
+      ...option,
+      checked: false,
+    }));
+
+    // Update the filterOptions state with the cleared options
+    setFilterOptions({
+      price: updatedPriceOptions,
+      color: updatedColorOptions,
+    });
+  };
+
   return (
     <Disclosure
       as="section"
@@ -24,11 +48,18 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {filterOptions.price.filter((option) => option.checked).length +
+                filterOptions.color.filter((option) => option.checked)
+                  .length}{" "}
+              Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button
+              type="button"
+              className="text-gray-500"
+              onClick={clearFilters}
+            >
               Clear all
             </button>
           </div>
@@ -41,7 +72,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Price</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.price.map((option, optionIdx) => (
-                  <div key={option.minValue} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.minValue}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`price-${optionIdx}`}
                       name="price[]"
@@ -49,8 +83,15 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onChange={() => {
+                        option.checked = !option.checked;
+                        setFilterOptions({ ...filterOptions });
+                      }}
                     />
-                    <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`price-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -61,7 +102,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
               <legend className="block font-medium">Color</legend>
               <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
                 {filterOptions.color.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
+                  <div
+                    key={option.value}
+                    className="flex items-center text-base sm:text-sm"
+                  >
                     <input
                       id={`color-${optionIdx}`}
                       name="color[]"
@@ -69,8 +113,15 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+                      onChange={() => {
+                        option.checked = !option.checked;
+                        setFilterOptions({ ...filterOptions });
+                      }}
                     />
-                    <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+                    <label
+                      htmlFor={`color-${optionIdx}`}
+                      className="ml-3 min-w-0 flex-1 text-gray-600"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -109,10 +160,19 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            // get current sort options state
+                            const updatedSortOptions = sortOptions.map((o) => ({
+                              ...o,
+                              // if it matches name, set current true
+                              current: o.name === option.name,
+                            }));
+                            // update state
+                            setSortOptions(updatedSortOptions);
                           }}
                           className={classNames(
-                            option.current ? "font-medium text-gray-900" : "text-gray-500",
+                            option.current
+                              ? "font-medium text-gray-900"
+                              : "text-gray-500",
                             active ? "bg-gray-100" : "",
                             "block px-4 py-2 text-sm"
                           )}
