@@ -1,15 +1,29 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { XIcon } from "@heroicons/react/outline";
+import { XIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
+import { useEffect } from "react";
 
-export default function Cart({ open, setOpen, cart, updateCart }) {
+export default function Cart({ open, setOpen, cart, updateCart}) {
+  
+  useEffect(() => {
+    let item =  JSON.parse(localStorage.getItem('items'))
+    if(item){
+      updateCart(item)
+    }
+  },[]); // render only once when session refreshed
+
+  useEffect(()=> {
+    let item = [...cart];
+    localStorage.setItem('items', JSON.stringify(item));
+  },[cart]); // localStorage updated on every change on cart array.
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 overflow-hidden z-10"
         onClose={() => {
-          setOpen;
+          setOpen(false); // closing the cart div on backdropClick
         }}
       >
         <div className="absolute inset-0 overflow-hidden">
@@ -55,6 +69,13 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                     <div className="mt-8">
                       <div className="flow-root">
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
+                          {cart.length == 0 &&
+                            <div className="flex flex-column justify-center items-center h-[20rem]">
+                              <div className="items-center">
+                                <ShoppingCartIcon className="flex flex-row w-12 mx-10" />
+                                <div className="pt-2">Your Cart is Empty</div>
+                              </div>
+                            </div>}
                           {cart.map((product) => (
                             <li key={product.id} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -105,7 +126,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>{cart.reduce((acc, prod) => {return acc + prod.price*prod.quantity},0)}</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
