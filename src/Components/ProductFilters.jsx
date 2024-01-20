@@ -109,7 +109,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            const newSortOptions = sortOptions.map(
+                              (sortOption) => sortOption.name === option.name ? { ...sortOption, current: true } : { ...sortOption, current: false }
+                            )
+                            setSortOptions(newSortOptions)
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",

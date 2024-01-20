@@ -36,12 +36,14 @@ export default function ProductTable({ cart, updateCart }) {
   useEffect(() => {
     let fetchProducts = async () => {
       console.info("Fetching Products...");
-      let res = await fetch("http://localhost:3001/products");
+      const activeSortOption = sortOptions.find((option) => option.current);
+
+      let res = await fetch(`http://localhost:3001/products?${activeSortOption? `_sort=${activeSortOption.name.toLowerCase()}` : ``}`);
       let body = await res.json();
       setProducts(body);
     };
     fetchProducts();
-  }, []);
+  }, [sortOptions]);
 
   return (
     <div className="bg-white">
