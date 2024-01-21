@@ -22,6 +22,7 @@ export default function Cart({ open, setOpen, cart, updateCart }) {
             leave="ease-in-out duration-500"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            onClick={() => setOpen(false)}
           >
             <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
