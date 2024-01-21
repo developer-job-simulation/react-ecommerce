@@ -49,7 +49,9 @@ export default function ProductTable({ cart, updateCart }) {
 
   const buildColorQuery = () => {
     let colorQuery = (activeSortOption || activePriceFilterOption) ? '&' : ''
-    colorQuery += `color=${activeColorFilterOptions.value}`
+    if (activeColorFilterOptions) {
+      colorQuery += `color=${activeColorFilterOptions.value}`
+    }
     return colorQuery
   }
 
