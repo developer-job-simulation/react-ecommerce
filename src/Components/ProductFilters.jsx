@@ -48,7 +48,17 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
+                      onChange={(e) => {
+                        const newPriceFilterOption = filterOptions.price.map(filterOption => {
+                          if (filterOption.label === option.label) {
+                            return { ...filterOption, checked: e.target.checked }
+                          } else {
+                            return { ...filterOption, checked: false }
+                          }
+                        })
+                        setFilterOptions({ ...filterOptions, price: newPriceFilterOption })
+                      }}
                     />
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}

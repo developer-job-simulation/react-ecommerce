@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import ProductFilters from "./ProductFilters";
+import React, { useEffect, useState } from "react"
+import ProductFilters from "./ProductFilters"
 
 const getDefaultFilterOptions = () => {
   return {
@@ -17,33 +17,48 @@ const getDefaultFilterOptions = () => {
       { value: "gray", label: "Gray", checked: false },
       { value: "teal", label: "Teal", checked: false },
     ],
-  };
-};
+  }
+}
 
 const getDefaultSortOptions = () => {
   return [
     { name: "Price", current: false },
     { name: "Newest", current: false },
-  ];
-};
+  ]
+}
 
 export default function ProductTable({ cart, updateCart }) {
-  let [products, setProducts] = useState([]);
+  let [products, setProducts] = useState([])
 
-  const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
-  const [sortOptions, setSortOptions] = useState(getDefaultSortOptions());
+  const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions())
+  const [sortOptions, setSortOptions] = useState(getDefaultSortOptions())
+  const activeSortOption = sortOptions.find((option) => option.current)
+  const activePriceFilterOption = filterOptions.price.find((option) => option.checked)
+
+  const buildPriceQuery = () => {
+    let priceQuery = activeSortOption? '&': ''
+    if (activePriceFilterOption) {
+      priceQuery = `price_gte=${activePriceFilterOption.minValue}`
+    }
+    if (activePriceFilterOption && !activePriceFilterOption.label.endsWith('+')) {
+      priceQuery += `&price_lte=${activePriceFilterOption.maxValue}`
+    }
+    return priceQuery
+  }
 
   useEffect(() => {
     let fetchProducts = async () => {
-      console.info("Fetching Products...");
-      const activeSortOption = sortOptions.find((option) => option.current);
+      console.info("Fetching Products...")
+      const sortQuery = activeSortOption ? `&_sort=${activeSortOption.name.toLowerCase()}` : ``
+      const priceQuery = buildPriceQuery()
 
-      let res = await fetch(`http://localhost:3001/products?${activeSortOption? `_sort=${activeSortOption.name.toLowerCase()}` : ``}`);
-      let body = await res.json();
-      setProducts(body);
-    };
-    fetchProducts();
-  }, [sortOptions]);
+      let res = await fetch(`http://localhost:3001/products?${sortQuery}${priceQuery}`)
+      let body = await res.json()
+      console.log(priceQuery)
+      setProducts(body)
+    }
+    fetchProducts()
+  }, [sortOptions, filterOptions])
 
   return (
     <div className="bg-white">
@@ -64,20 +79,20 @@ export default function ProductTable({ cart, updateCart }) {
                   type="button"
                   className="hidden group-hover:block group-hover:opacity-50 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-black"
                   onClick={() => {
-                    let newCart = cart.slice();
+                    let newCart = cart.slice()
 
                     if (!newCart.includes(product)) {
-                      product.quantity = 1;
-                      newCart.push(product);
+                      product.quantity = 1
+                      newCart.push(product)
                     } else {
                       newCart.map((p) => {
                         if (p.id === product.id) {
-                          p.quantity += 1;
+                          p.quantity += 1
                         }
-                      });
+                      })
                     }
 
-                    updateCart(newCart);
+                    updateCart(newCart)
                   }}
                 >
                   Add To Cart
@@ -90,5 +105,5 @@ export default function ProductTable({ cart, updateCart }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
