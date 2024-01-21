@@ -7,6 +7,9 @@ function classNames(...classes) {
 }
 
 export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+  const activePriceFilterOption = filterOptions.price.find((option) => option.checked)
+  const activeColorFilterOptions = filterOptions.color.find((option) => option.checked)
+
   return (
     <Disclosure
       as="section"
@@ -24,11 +27,18 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {!!activePriceFilterOption + !!activeColorFilterOptions } Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button type="button" className="text-gray-500"
+              onClick={() => {
+                const newPriceFilterOptions = filterOptions.price.map(filterOption => ({ ...filterOption, checked: false }))
+                const newColorFilterOptions = filterOptions.color.map(filterOption => ({ ...filterOption, checked: false }))
+
+                setFilterOptions({ ...filterOptions, price: newPriceFilterOptions, color: newColorFilterOptions })
+              }}
+            >
               Clear all
             </button>
           </div>
