@@ -9,7 +9,7 @@ function Home() {
     const cart = localStorage.getItem("cart");
     return cart ? JSON.parse(cart) : [];
   });
-
+  const items = cart.reduce((acc, product) => (acc + product.quantity), 0)
   useEffect(() => {
     const cartJSON = JSON.stringify(cart);
     localStorage.setItem("cart", cartJSON);
@@ -17,7 +17,7 @@ function Home() {
 
   return (
     <main>
-      <NavBar {...{ setOpen }} />
+      <NavBar {...{ setOpen, items }} />
       <Cart {...{ open, setOpen, cart, updateCart }} />
       <ProductTable {...{ cart, updateCart }} />
     </main>

@@ -3,7 +3,6 @@ import { XIcon } from "@heroicons/react/outline"
 import React, { Fragment } from "react"
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
-  console.log(cart)
   let subtotal = cart.reduce((acc, product) => (acc + product.price*product.quantity), 0)
   return (
     <Transition.Root show={open} as={Fragment}>
