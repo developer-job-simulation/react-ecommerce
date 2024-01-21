@@ -34,9 +34,10 @@ export default function ProductTable({ cart, updateCart }) {
   const [sortOptions, setSortOptions] = useState(getDefaultSortOptions())
   const activeSortOption = sortOptions.find((option) => option.current)
   const activePriceFilterOption = filterOptions.price.find((option) => option.checked)
+  const activeColorFilterOptions = filterOptions.color.find((option) => option.checked)
 
   const buildPriceQuery = () => {
-    let priceQuery = activeSortOption? '&': ''
+    let priceQuery = activeSortOption ? '&' : ''
     if (activePriceFilterOption) {
       priceQuery = `price_gte=${activePriceFilterOption.minValue}`
     }
@@ -46,13 +47,20 @@ export default function ProductTable({ cart, updateCart }) {
     return priceQuery
   }
 
+  const buildColorQuery = () => {
+    let colorQuery = (activeSortOption || activePriceFilterOption) ? '&' : ''
+    colorQuery += `color=${activeColorFilterOptions.value}`
+    return colorQuery
+  }
+
   useEffect(() => {
     let fetchProducts = async () => {
       console.info("Fetching Products...")
       const sortQuery = activeSortOption ? `&_sort=${activeSortOption.name.toLowerCase()}` : ``
       const priceQuery = buildPriceQuery()
+      const colorQuery = buildColorQuery()
 
-      let res = await fetch(`http://localhost:3001/products?${sortQuery}${priceQuery}`)
+      let res = await fetch(`http://localhost:3001/products?${sortQuery}${priceQuery}${colorQuery}`)
       let body = await res.json()
       console.log(priceQuery)
       setProducts(body)

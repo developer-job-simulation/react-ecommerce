@@ -75,7 +75,18 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                     <input
                       id={`color-${optionIdx}`}
                       name="color[]"
-                      defaultValue={option.value}
+                      checked={option.checked}
+                      onChange={(e) => {
+                        const newColorFilterOption = filterOptions.color.map(filterOption => {
+                          if (filterOption.label === option.label) {
+                            return { ...filterOption, checked: e.target.checked }
+                          } else {
+                            return { ...filterOption, checked: false }
+                          }
+                        })
+                        console.log(newColorFilterOption)
+                        setFilterOptions({ ...filterOptions, color: newColorFilterOption })
+                      }}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
