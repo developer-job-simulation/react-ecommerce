@@ -7,6 +7,9 @@ function classNames(...classes) {
 }
 
 export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+  const activePriceFilterOption = filterOptions.price.find((option) => option.checked)
+  const activeColorFilterOptions = filterOptions.color.find((option) => option.checked)
+
   return (
     <Disclosure
       as="section"
@@ -24,11 +27,18 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {!!activePriceFilterOption + !!activeColorFilterOptions } Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button type="button" className="text-gray-500"
+              onClick={() => {
+                const newPriceFilterOptions = filterOptions.price.map(filterOption => ({ ...filterOption, checked: false }))
+                const newColorFilterOptions = filterOptions.color.map(filterOption => ({ ...filterOption, checked: false }))
+
+                setFilterOptions({ ...filterOptions, price: newPriceFilterOptions, color: newColorFilterOptions })
+              }}
+            >
               Clear all
             </button>
           </div>
@@ -48,7 +58,17 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       defaultValue={option.minValue}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
-                      defaultChecked={option.checked}
+                      checked={option.checked}
+                      onChange={(e) => {
+                        const newPriceFilterOption = filterOptions.price.map(filterOption => {
+                          if (filterOption.label === option.label) {
+                            return { ...filterOption, checked: e.target.checked }
+                          } else {
+                            return { ...filterOption, checked: false }
+                          }
+                        })
+                        setFilterOptions({ ...filterOptions, price: newPriceFilterOption })
+                      }}
                     />
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -65,7 +85,18 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                     <input
                       id={`color-${optionIdx}`}
                       name="color[]"
-                      defaultValue={option.value}
+                      checked={option.checked}
+                      onChange={(e) => {
+                        const newColorFilterOption = filterOptions.color.map(filterOption => {
+                          if (filterOption.label === option.label) {
+                            return { ...filterOption, checked: e.target.checked }
+                          } else {
+                            return { ...filterOption, checked: false }
+                          }
+                        })
+                        console.log(newColorFilterOption)
+                        setFilterOptions({ ...filterOptions, color: newColorFilterOption })
+                      }}
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
@@ -109,7 +140,10 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            const newSortOptions = sortOptions.map(
+                              (sortOption) => sortOption.name === option.name ? { ...sortOption, current: true } : { ...sortOption, current: false }
+                            )
+                            setSortOptions(newSortOptions)
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
