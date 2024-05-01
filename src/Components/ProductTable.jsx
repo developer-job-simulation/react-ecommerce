@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import ProductFilters from "./ProductFilters";
 
 const getDefaultFilterOptions = () => {
@@ -27,7 +27,7 @@ const getDefaultSortOptions = () => {
   ];
 };
 
-export default function ProductTable({ cart, updateCart }) {
+const ProductTable = memo(({ cart, updateCart }) => {
   let [products, setProducts] = useState([]);
 
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
@@ -41,16 +41,31 @@ export default function ProductTable({ cart, updateCart }) {
       setProducts(body);
     };
     fetchProducts();
-  });
+  }, []);
 
+  const sortedProducts = (products, sortOptions) => {
+    console.log("inside memo");
+    const currentOption = sortOptions.find(opt => opt.current === true);
+    if (!currentOption) {
+      return [...products].sort((a,b) => a.id - b.id);
+    }
+    if (currentOption.name === 'Price') {
+      return [...products].sort((a, b) => a.price - b.price);
+    } else if (currentOption.name === "Newest") {
+      return [...products].sort((a,b) => a.releaseDate - b.releaseDate);
+    } else {
+      return [...products].sort((a,b) => a.id - b.id);
+    }
+  };
+
+  const prods = sortedProducts(products, sortOptions);
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
         <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
-
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
+          {prods.map((product) => (
             <a key={product.id} className="group">
               <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                 <img
@@ -89,4 +104,6 @@ export default function ProductTable({ cart, updateCart }) {
       </div>
     </div>
   );
-}
+});
+
+export default ProductTable;
