@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import ProductFilters from "./ProductFilters";
 
 const getDefaultFilterOptions = () => {
@@ -28,6 +28,7 @@ const getDefaultSortOptions = () => {
 };
 
 const ProductTable = memo(({ cart, updateCart }) => {
+  console.log('rendering');
   let [products, setProducts] = useState([]);
 
   const [filterOptions, setFilterOptions] = useState(getDefaultFilterOptions());
@@ -44,7 +45,6 @@ const ProductTable = memo(({ cart, updateCart }) => {
   }, []);
 
   const sortedProducts = (products, sortOptions) => {
-    console.log("inside memo");
     const currentOption = sortOptions.find(opt => opt.current === true);
     if (!currentOption) {
       return [...products].sort((a,b) => a.id - b.id);
@@ -58,7 +58,32 @@ const ProductTable = memo(({ cart, updateCart }) => {
     }
   };
 
-  const prods = sortedProducts(products, sortOptions);
+  const filteredProducts = (products, filterOptions) => {
+    const checkedPrices = filterOptions.price.filter(price => price.checked);
+    const checkedColors = filterOptions.color.filter(color => color.checked);
+    let newProducts = [...products];
+    if (checkedPrices.length) {
+      newProducts = newProducts.filter((prod, index) => {
+        const matchesOneOfPrices = checkedPrices.some((price) => {
+          return price.minValue <= prod.price && price.maxValue >= prod.price
+        });
+        return matchesOneOfPrices;
+      }); 
+    }
+    if (checkedColors.length) {
+      newProducts = newProducts.filter((prod, index) => {
+        const matchesOneOfColors = checkedColors.some((color) => {
+          return prod.color === color.value;
+        })
+        return matchesOneOfColors;
+      })
+    }
+    return newProducts;
+  };
+  
+  let prods = filteredProducts(products, filterOptions);
+  prods = sortedProducts(prods, sortOptions);
+
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
