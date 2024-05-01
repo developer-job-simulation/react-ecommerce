@@ -24,7 +24,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              0 Filters
+              {[...(filterOptions.price.concat(filterOptions.color))].filter(x => x.checked).length} Filters
             </Disclosure.Button>
           </div>
           <div className="pl-6">
@@ -49,6 +49,16 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+
+                      //
+                      onChange={(e) => {
+                        setFilterOptions({color: filterOptions.color, price: [...filterOptions.price].map((opt) => {
+                          if (opt.label === option.label) {
+                            opt.checked = !opt.checked;
+                          }
+                          return opt;
+                        })});
+                      }}
                     />
                     <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -69,6 +79,16 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       type="checkbox"
                       className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-black focus:ring-black"
                       defaultChecked={option.checked}
+
+                      //
+                      onChange={(e) => {
+                        setFilterOptions({price: filterOptions.price, color: [...filterOptions.color].map((opt) => {
+                          if (opt.label === option.label) {
+                            opt.checked = !opt.checked;
+                          }
+                          return opt;
+                        })});
+                      }}
                     />
                     <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
                       {option.label}
@@ -110,6 +130,14 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                         <button
                           onClick={() => {
                             // TODO
+                            setSortOptions([...sortOptions].map((opt) => {
+                              if (opt.name === option.name) {
+                                opt.current = !opt.current;
+                              } else {
+                                opt.current = false;
+                              }
+                              return opt;
+                            }))
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
