@@ -3,3 +3,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.idea/modules.xml
+.idea/react-ecommerce.iml
+.idea/vcs.xml
+package-lock.json

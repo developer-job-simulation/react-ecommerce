@@ -20,7 +20,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "autoprefixer": "^10.4.5",
     "json-server": "^0.17.0",
-    "postcss": "^8.4.12",
+    "postcss": "8.4.31",
     "tailwindcss": "^3.0.24"
   }
 }
