@@ -6,7 +6,43 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, products, setProducts }) {
+
+  const getActiveOption = (optionName) => {
+    const activeOption = [...sortOptions].map((option) => {
+      if (option.name === optionName) {
+        return {...option, current: true}
+      } else {
+        return {...option, current: false}
+      }
+
+    });
+
+    setSortOptions(activeOption);
+  }
+
+  const sortByOptions = (option) => {
+    const productKeys = {
+      "Price": "price",
+      "Newest": "releaseDate",
+    }
+
+    const sortOption = productKeys[option]
+    const orderedProducts = [...products].sort((product1, product2) => {
+        if (product1[sortOption] < product2[sortOption]) {
+          return -1
+        }
+        return 1
+      })
+
+    setProducts(orderedProducts)
+  }
+
+  const handleOnClick = (optionName) => {
+    sortByOptions(optionName)
+    getActiveOption(optionName)
+  }
+
   return (
     <Disclosure
       as="section"
@@ -108,9 +144,7 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                     <Menu.Item key={option.name}>
                       {({ active }) => (
                         <button
-                          onClick={() => {
-                            // TODO
-                          }}
+                          onClick={() => handleOnClick(option.name)}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
                             active ? "bg-gray-100" : "",
