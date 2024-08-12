@@ -36,12 +36,60 @@ export default function ProductTable({ cart, updateCart }) {
   useEffect(() => {
     let fetchProducts = async () => {
       console.info("Fetching Products...");
-      let res = await fetch("http://localhost:3001/products");
+      let res = await fetch(`http://localhost:3001/products`);
       let body = await res.json();
       setProducts(body);
     };
     fetchProducts();
-  });
+  }, []);
+
+  // sort products based on sort option selected
+  useEffect(() => {
+    let newProducts = products.slice();
+    newProducts = newProducts.sort((prod1, prod2) => {
+      let sortOption = sortOptions.find((option) => option.current)
+      if (sortOption.name === 'Price') {
+        // sort asc by price
+        return prod1.price - prod2.price
+      } else {
+        // sort asc by release date
+        return prod1.releaseDate - prod2.releaseDate
+      }
+    })
+
+    setProducts(newProducts)
+  }, [sortOptions]);
+
+  // checks if a product matches color filter
+  const matchedColorFilter = (product) => {
+    const colorFilters = filterOptions.color;
+    //return true if no filter is checked
+    if (!colorFilters.find(f => f.checked)) return true;
+
+    for (let colorFilter of colorFilters) {
+      if (colorFilter.checked && product.color === colorFilter.value) {
+        return true;
+      }
+    }
+    return false;
+  }
+  // checks if a product matches price filter
+  const matchedPriceFilter = (product) => {
+    const priceFilters = filterOptions.price;
+    //return true if no filter is checked
+    if (!priceFilters.find(f => f.checked)) return true;
+
+    for (let priceFilter of priceFilters) {
+      if (priceFilter.checked && (product.price >= priceFilter.minValue && product.price <= priceFilter.maxValue)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const filterProducts = (products) => {
+    return products.filter(p => matchedColorFilter(p) && matchedPriceFilter(p))
+  }
 
   return (
     <div className="bg-white">
@@ -50,41 +98,42 @@ export default function ProductTable({ cart, updateCart }) {
         <ProductFilters {...{ filterOptions, setFilterOptions, sortOptions, setSortOptions }} />
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <a key={product.id} className="group">
-              <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
-                  className="w-full h-full object-center object-cover"
-                />
-                <button
-                  type="button"
-                  className="hidden group-hover:block group-hover:opacity-50 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-black"
-                  onClick={() => {
-                    let newCart = cart.slice();
+          {filterProducts(products)
+            .map((product) => (
+              <a key={product.id} className="group">
+                <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                  <img
+                    src={product.imageSrc}
+                    alt={product.imageAlt}
+                    className="w-full h-full object-center object-cover"
+                  />
+                  <button
+                    type="button"
+                    className="hidden group-hover:block group-hover:opacity-50 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-black"
+                    onClick={() => {
+                      let newCart = cart.slice();
 
-                    if (!newCart.includes(product)) {
-                      product.quantity = 1;
-                      newCart.push(product);
-                    } else {
-                      newCart.map((p) => {
-                        if (p.id === product.id) {
-                          p.quantity += 1;
-                        }
-                      });
-                    }
+                      if (!newCart.includes(product)) {
+                        product.quantity = 1;
+                        newCart.push(product);
+                      } else {
+                        newCart.map((p) => {
+                          if (p.id === product.id) {
+                            p.quantity += 1;
+                          }
+                        });
+                      }
 
-                    updateCart(newCart);
-                  }}
-                >
-                  Add To Cart
-                </button>
-              </div>
-              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">${product.price}</p>
-            </a>
-          ))}
+                      updateCart(newCart);
+                    }}
+                  >
+                    Add To Cart
+                  </button>
+                </div>
+                <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+                <p className="mt-1 text-lg font-medium text-gray-900">${product.price}</p>
+              </a>
+            ))}
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { ShoppingBagIcon } from "@heroicons/react/outline";
 import React from "react";
 
-export default function NavBar({ setOpen }) {
+export default function NavBar({ setOpen, cartSize=0 }) {
   return (
     <div className="bg-white">
       <header className="relative">
@@ -41,7 +41,7 @@ export default function NavBar({ setOpen }) {
                             className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                             aria-hidden="true"
                           />
-                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartSize}</span>
                           <span className="sr-only">items in cart, view bag</span>
                         </button>
                       </div>
