@@ -1,0 +1,8 @@
+- ✔ Sort products by price and release date
+- ✔ Cart Persistence on Refresh
+- ✔ Add Product Filters Functionality
+- ✔ Product Fetch is Causing Infinite Loop
+- ✔ Need to display "Empty Cart" when cart is empty on cart page
+- ✔ Update Cart in Nav with Cart Size
+- ✔ Cart not closing when user clicks gray region
+- ✔ Subtotal Is not Implemented on Cart Page
