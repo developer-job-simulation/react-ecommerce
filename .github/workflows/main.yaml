@@ -1,0 +1,14 @@
+name: Trigger React Ecommerce Test Runner
+
+on:
+  pull_request_target:
+    branches: ["main"]
+
+jobs:
+  react_ecommerce_test_runner:
+    uses: developer-job-simulation/react-ecommerce-tests/.github/workflows/main.yml@main
+    with:
+      pr_number: ${{ github.event.pull_request.number }}
+      head_sha: ${{ github.event.pull_request.head.sha }}
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }} 
