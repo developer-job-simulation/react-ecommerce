@@ -1,8 +1,67 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+
+/* const useLocalStorage = (storageKey, fallbackState) => {
+  const [value, setValue] = useState(
+    JSON.parse(localStorage.getItem(storageKey)) ?? fallbackState
+  );
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(value));
+  }, [value, storageKey]);
+
+  return [value, setValue];
+} */
 
 export default function Cart({ open, setOpen, cart, updateCart }) {
+  /* const [localCart, setLocalCart] = useLocalStorage('localCart', cart)
+
+
+
+   useEffect(() => {
+    if (localCart) {
+      console.log(localCart)
+      cart = localCart
+      console.log(cart)
+    }
+  }, [])
+
+  useEffect(() => {
+    setLocalCart(cart)
+  }, [cart]); 
+ */
+
+
+
+  /*   useEffect(() => {
+      if (cart.length <= 0 && localCart != null) {
+        setLocalCart(localCart)
+      } else if (cart.length != 0) {
+        setLocalCart(cart)
+      }
+    }, [cart]); */
+
+  /* const jsonArray = JSON.stringify(cart)
+
+  localStorage.setItem('cart', jsonArray)
+
+  const str = localStorage.getItem('cart')
+
+  const parsedArray = JSON.parse(str)
+
+  console.log(parsedArray) */
+
+  /*   if (localStorage.getItem('cart')===null) {
+      let jsonArray = JSON.stringify(cart)
+      localStorage.setItem('cart', jsonArray)
+    } else {
+      let str = localStorage.getItem('cart')
+      cart = JSON.parse(str)
+  
+    }
+  
+    console.log(cart) */
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
