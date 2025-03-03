@@ -6,7 +6,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions }) {
+export default function ProductFilters({ filterOptions, setFilterOptions, sortOptions, setSortOptions, setProducts, products }) {
   return (
     <Disclosure
       as="section"
@@ -109,7 +109,20 @@ export default function ProductFilters({ filterOptions, setFilterOptions, sortOp
                       {({ active }) => (
                         <button
                           onClick={() => {
-                            // TODO
+                            if(option.name == "Price"){
+                             setSortOptions(  
+                              [
+                                { name: "Price", current: true },
+                                { name: "Newest", current: false },
+                              ])
+                            }
+                            else{
+                              setSortOptions(  
+                                [
+                                  { name: "Price", current: false },
+                                  { name: "Newest", current: true },
+                                ])
+                            }
                           }}
                           className={classNames(
                             option.current ? "font-medium text-gray-900" : "text-gray-500",
